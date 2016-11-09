@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+    {include file="header.html"} 
+    <!--Conteúdo-->
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                 <!--Paginas dashboard-->
+                 <session class="col-sm-9 col-md-12 col-lg-12 main">
+                    <h1 class="page-header">Paginas</h1>
+                   	 	<a href="?ctrl=dashboardPagina&ac=cadastrar&curso={$numero_curso}" class="btn btn-success pull-right">Adicionar pagina</a><br><br>
+                       {if !empty($sucesso)}
+                          <div class="alert alert-success"> 
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+                            <strong>Sucesso!</strong> {$sucesso}
+                          </div>
+                       {/if}    
+                       {if !empty($fracasso)}
+                          <div class="alert alert-danger"> 
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+                            <strong>Operação mal sucedida!</strong> {$fracasso} Por favor tente novamente.
+                          </div>
+                       {/if}    
+                       {if !$pagina_inicial || !$programa_estudo}
+                            <div class="alert alert-info"> 
+                              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+                              A <strong>pagina inicial</strong> e a pagina de <strong>programa de estudo</strong> são obrigatórias!<br>Adicione-as para que o curso seja publicado.
+                            </div>
+                        {/if}
+                        <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                            <thead>
+                                <tr >                           
+                                    <th class="text-center">Título</th>
+                                    <th class="text-center">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if !empty($paginas)}
+                              {foreach $paginas as $pagina}
+                                  <tr>
+                                      <td><strong>{$pagina['titulo']}</strong></td>
+                                      <td>
+                                      <a href="?ctrl=dashboardPagina&ac=recuperar&pagina={$pagina['titulo']}&curso={$pagina['numero_curso']}" class="btn btn-primary glyphicon glyphicon-edit"> Editar</a>
+                                      <a href="?ctrl=dashboardPagina&ac=excluir&pagina={$pagina['titulo']}&curso={$pagina['numero_curso']}" class="btn btn-danger glyphicon glyphicon-remove"> Remover</a>
+                                      </td>
+                                  </tr>
+                                {/foreach}
+                             {/if}
+                             {if !$pagina_inicial}
+                             	 <tr>
+                                      <td><strong>Pagina Inicial</strong></td>
+                                      <td>
+                                      <a href="?ctrl=dashboardPagina&ac=cadastrar&pagina=Pagina Inicial&curso={$numero_curso}" class="btn btn-success glyphicon glyphicon-edit"> Adicionar</a>
+                                      </td>
+                                  </tr>
+                             {/if}
+                             {if !$programa_estudo}
+                                  <tr>
+                                      <td><strong>Programa de estudo</strong></td>
+                                      <td>
+                                      <a href="?ctrl=dashboardPagina&ac=cadastrar&pagina=Programa de estudo&curso={$numero_curso}" class="btn btn-success glyphicon glyphicon-edit"> Adicionar</a>
+                                      </td>
+                                  </tr>
+                             {/if}
+                            </tbody>
+                        </table>
+                        
+                        
+                 </session>
+                 <!--Paginas dashboard-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Conteúdo-->
+    <hr>
+    <!--Rodapé-->
+    {include file="footer.html"} 
+</body>
+</html>

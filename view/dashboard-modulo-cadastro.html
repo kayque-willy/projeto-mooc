@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+    {include file="header.html"} 
+    <!--Conteúdo-->
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                 <!--Cursos dashboard-->
+                 <session class="col-sm-9 col-md-12 col-lg-12 main">
+                    <h1 class="page-header">Novo do módulo </h1>
+                    <form id="modulo" role="form" method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+                       {if !empty($modulo[0]['numero_curso'])} 
+                          <input type="hidden" name="numero_curso" value="{$modulo[0]['numero_curso']}"/>
+                       {/if}
+                      <legend>Dados do módulo</legend>
+                      <!--Nome-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label pull-left" for="Nome">Nome do módulo</label>
+                        <div class="col-md-10">
+                          <input id="Nome" name="nome" type="text" placeholder="Nome do módulo" class="form-control input-md" {if !empty($modulo[0]['nome'])} value="{$modulo[0]['nome']}" {/if}>
+                        </div>
+                      </fieldset>
+                      <!--Nome-->
+                      <!--Foto-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label" for="Foto">Foto</label>
+                        <img class="col-md-2 img-rounded" src="{if !empty($modulo[0]['imagem'])} controller/temp/{$modulo[0]['numero_curso']}-{$modulo[0]['nome']}.jpg {else}http://www.freeiconspng.com/uploads/no-image-icon-13.png{/if}"  width="50"/><br>
+                        <div class="col-md-8">
+                          <input id="Foto" name="foto" class="input-file" type="file">
+                        </div>
+                      </fieldset>
+                      <!--Foto--> 
+                      <!--Video-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label pull-left" for="Nome">Video</label>
+                        <div class="col-md-10">
+                          <div class="row ">
+                            	{if $modulo[0]['video']!='NULL' && !empty($modulo[0]['video'])}
+                                <iframe width="560" height="315" src="{$modulo[0]['video']}" frameborder="0" allowfullscreen></iframe>
+                              {else}
+                                <img class="img-rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Wikiversity-Mooc-Icon-Video.svg/2000px-Wikiversity-Mooc-Icon-Video.svg.png"  width="180"/> 
+                              {/if}
+                            <hr>
+                            <div class="col-md-12">
+                              <input id="video" name="video" type="text" placeholder="Url do video" class="form-control input-md"  {if $modulo[0]['video']!='NULL'} value="{$modulo[0]['video']}" {/if}>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <!--Video--> 
+                      <!--Descrição-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label pull-left" for="Nome">Descrição</label>
+                        <div class="col-md-10">
+                           <textarea class="form-control" id="descricao" rows="13" name="descricao" placeholder="Descrição do módulo" style="resize:none;">{if !empty($modulo[0]['descricao'])}{$modulo[0]['descricao']}{/if}</textarea>
+                        </div>
+                      </fieldset>
+                      <!--Descrição-->
+                      <!--Recursos-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label pull-left" >Recursos do módulo</label>
+                        <div class="col-md-10">
+                          <div class="form-group multiple-form-group">
+                              {if (!empty($recursos)) and ($cont>1)}
+                                {foreach $recursos as $recurso}
+                                	<div class="form-group input-group">
+                                        <input name="rec[]" class="form-control" rows="3" placeholder="Nome do recurso" value="{$recurso['nome_recurso']}">
+                                        <hr>
+                                        <input name="rec_link[]" class="form-control" rows="3" placeholder="Url" value="{$recurso['recurso']}">
+                                        <span class="input-group-btn ">
+                                          <button type="button" class="btn btn-success btn-danger btn-remove"><i class="glyphicon glyphicon-minus"></i></button>
+                                        </span>
+                                    </div>
+                                {/foreach}
+                              {/if}
+                              <div class="form-group input-group">
+                                  <input name="rec[]" class="form-control" rows="3" placeholder="Nome do recurso" {if !empty($cont)} {if $cont==1} value="{$recursos[0]['nome_recurso']}" {/if} {/if}>
+                                  <hr>
+                                  <input name="rec_link[]" class="form-control" rows="3" placeholder="Url" {if !empty($cont)} {if $cont==1} value="{$recursos[0]['recurso']}" {/if} {/if}>
+                                  <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-add btn-success"><i class="glyphicon glyphicon-plus"></i></button>
+                                  </span>
+                              </div>
+                        	</div>
+                        </div>
+                      </fieldset>
+                      <!--Recursos-->
+                      <!--Enviar-->  
+                      <ul class="list-inline pull-right">
+                        <li>
+                          <button type="button" class="btn btn-primary" onClick='window.location.replace("?ctrl=dashboardModulo&ac=modulos&curso={$numero_curso}");'>Cancelar</button>
+                        </li>
+                        <li>
+                          <button type="submit" class="btn btn-primary btn-success">Salvar</button>
+                        </li>
+                      </ul>
+                      <!--Enviar-->  
+                    </form>
+                 </session>
+                 <!--Cursos dashboard-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Conteúdo-->
+    <hr>
+   <hr>
+   {include file="footer.html"} 
+<!--Campos múltiplos-->
+<script type="text/javascript">
+(function ($) {
+    $(function () {
+
+        var addFormGroup = function (event) {
+            event.preventDefault();
+
+            var $formGroup = $(this).closest('.form-group');
+            var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+            var $formGroupClone = $formGroup.clone();
+
+            $(this)
+                .toggleClass('btn-default btn-add btn-danger btn-remove')
+                .html('<i class="glyphicon glyphicon-minus"></i>');
+
+            $formGroupClone.find('input').val('');
+            $formGroupClone.insertAfter($formGroup);
+
+            var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last');
+            if ($multipleFormGroup.data('max') <= countFormGroup($multipleFormGroup)) {
+                $lastFormGroupLast.find('.btn-add').attr('disabled', true);
+            }
+        };
+
+        var removeFormGroup = function (event) {
+            event.preventDefault();
+
+            var $formGroup = $(this).closest('.form-group');
+            var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+
+            var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last');
+            if ($multipleFormGroup.data('max') >= countFormGroup($multipleFormGroup)) {
+                $lastFormGroupLast.find('.btn-add').attr('disabled', false);
+            }
+
+            $formGroup.remove();
+        };
+
+        var countFormGroup = function ($form) {
+            return $form.find('.form-group').length;
+        };
+
+        $(document).on('click', '.btn-add', addFormGroup);
+        $(document).on('click', '.btn-remove', removeFormGroup);
+
+    });
+})(jQuery);
+</script>
+<!--Campos múltiplos-->
+</body>
+</html>

@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+  {include file="header.html"} 
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                 <!--Paginas dashboard-->
+                 <session class="col-sm-9 col-md-12 col-lg-12 main">
+                    <h1 class="page-header">Dados pagina</h1>
+                     <form id="pagina" method="POST" role="form" method="POST" action="" autocomplete="off">
+                      <legend>Editar pagina</legend>
+                      <!--Nome-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label pull-left" for="Nome">Título da pagina</label>
+                        <div class="col-md-10">
+                          {if $pagina=="Pagina Inicial" || $pagina=="Programa de estudo"}
+                          	<input type="hidden" name="titulo" value="{$pagina}">
+                          	<h4>{$pagina}</h4>
+                          {else}
+                          	<input id="titulo" name="titulo" type="text" placeholder="Título da pagina" class="form-control input-md" required="" {if $pagina} value="{$pagina}" {/if}>
+                          {/if}
+                        </div>
+                      </fieldset>
+                      <!--Nome-->
+                      <!--Sessão-->
+                      {if !empty($pagina_rec)}
+                      	{foreach $pagina_rec as $conteudo}
+                            {if $conteudo['tipo']=='sessao'}
+                            <fieldset id="field{$conteudo['field']}" class="row form-group">
+                                <label class="col-md-2 control-label pull-left" for="Nome">Sessão</label>
+                                <div class="col-md-10">
+                                <input name="titulo_sessao[]" type="text" placeholder="Título da sessão" class="form-control input-md" value="{$conteudo['indice']}"><br>   
+                                <textarea name="conteudo_sessao[]" class="form-control" rows="13" placeholder="Conteúdo da sessão" style="resize:none;">{$conteudo['conteudo']}</textarea>
+                                <input type="hidden" name="ordem[]" value="sessao">
+                                <button id="remove|{$conteudo['field']}" class="btn btn-danger remove-me">Remover</button>                           		</div>
+                            </fieldset>
+                            {elseif $conteudo['tipo']=='item'}
+                            <fieldset id="field{$conteudo['field']}" class="row form-group">
+                              <label class="col-md-2 control-label pull-left" for="Nome">Item</label>
+                              <div class="col-md-10">
+                              <input name="item[]" type="text" placeholder="Item" class="form-control" value="{$conteudo['item']}"><br>		
+                              <input name="link[]" type="text" placeholder="link" class="form-control" value="{$conteudo['link']}"><br>	
+                              <input type="hidden" name="ordem[]" value="item">
+                              <button id="remove|{$conteudo['field']}" class="btn btn-danger remove-me">Remover</button>
+                              </div>
+                            </fieldset>
+                            {/if}
+                        {/foreach}
+                       	<input type="hidden" name="pagina" value="{$pagina}"/>
+                      {/if}
+                      <input  id="field" type="hidden"/>
+                      <!--Sessão-->
+                      <!--Enviar-->  
+                      <ul class="list-inline pull-right">
+                        <li>
+                        	<button id="b1" class="btn btn-info add-area" type="button">Adicionar sessão</button>
+                        </li>
+                        <li>
+                        	<button id="b2" class="btn btn-info add-campo" type="button">Adicionar item</button>
+                        </li>
+                        <li>
+                          <button type="button" class="btn btn-primary" onClick='window.location.replace("?ctrl=dashboardPagina&ac=paginas&curso={$numero_curso}");'>Cancelar</button>
+                        </li>
+                        <li>
+                          <button type="submit" class="btn btn-primary btn-success" >Salvar</button>
+                        </li>
+                      </ul>
+                      <!--Enviar-->  
+                    </form>	
+                 </session>
+                 <!--Paginas dashboard-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Conteúdo-->
+    <hr>
+    {include file="footer.html"} 
+<!--Campos múltiplos-->
+<script type="text/javascript">
+$(document).ready(function(){
+    var next = {if !empty($cont)} {$cont} {else} 0 {/if};
+	var cont = 0;
+	var id;
+    $(".add-area").on( "click", function(e){
+        e.preventDefault();
+        addto = "#field";
+        next = next + 1;
+		cont++;
+        var newIn = '<fieldset id="field' + next + '"class="row form-group">'+
+		'<label class="col-md-2 control-label pull-left" for="Nome">Sessão</label>'+
+		'<div class="col-md-10">'+
+		'<input name="titulo_sessao[]" type="text" placeholder="Título da sessão" class="form-control input-md"><br>'+		
+		'<textarea name="conteudo_sessao[]" class="form-control" rows="13" placeholder="Conteúdo da sessão" style="resize:none;"></textarea>'+
+		'<input type="hidden" name="ordem[]" value="sessao">'+
+		'<button id="remove|' + next + '" class="btn btn-danger remove-me">Remover</button></div>'+
+		'</fieldset>';
+		var newInput = $(newIn);
+        $(addto).before(newInput);
+        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+		
+		$('.remove-me').on( "click", function(e){
+			e.preventDefault();
+			var myString = this.id;
+			var fieldNum = myString.split('|');
+			var fieldID = "#field" + fieldNum[1];
+			$(fieldID).remove();
+			$(this).remove();
+		});
+    });
+	$(".add-campo").on( "click", function(e){
+        e.preventDefault();
+        addto = "#field";
+        next = next + 1;
+		cont++;	
+        var newIn = '<fieldset id="field' + next + '"class="row form-group">'+
+		'<label class="col-md-2 control-label pull-left" for="Nome">Item</label>'+
+		'<div class="col-md-10">'+
+		'<input name="item[]" type="text" placeholder="Item" class="form-control"><br>'+		
+		'<input name="link[]" type="text" placeholder="link" class="form-control"><br>'+	
+		'<input type="hidden" name="ordem[]" value="item">'+
+		'<button id="remove|' + next + '" class="btn btn-danger remove-me">Remover</button></div>'+
+		'</fieldset>';
+		var newInput = $(newIn);
+        $(addto).before(newInput);
+        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+		
+		$('.remove-me').on( "click", function(e){
+			e.preventDefault();
+			var myString = this.id;
+			var fieldNum = myString.split('|');
+			var fieldID = "#field" + fieldNum[1];
+			$(fieldID).remove();
+			$(this).remove();
+		});
+		
+    });
+	
+	$('.remove-me').on( "click", function(e){
+			e.preventDefault();
+			var myString = this.id;
+			var fieldNum = myString.split('|');
+			var fieldID = "#field" + fieldNum[1];
+			$(fieldID).remove();
+			$(this).remove();
+		});
+});
+</script>
+<!--Campos múltiplos-->
+</body>
+</html>

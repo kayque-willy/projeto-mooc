@@ -1,0 +1,184 @@
+﻿{if empty($sessao)} 
+  <!--Menu superior-->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid"> 
+    <!--Cabeçalho do menu-->
+    <div class="navbar-header"> 
+      <!--Botão collapse da navegação móvel--> 
+      <!--Este botão só é exibido em dispositivos móveis-->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-principal"> <span class="sr-only">Navegação móvel</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <!--Collapse da navegação móvel--> 
+      <!--Brand com o título do projeto--> 
+      <a class="navbar-brand" href="index.php">Nome do projeto</a> </div>
+    <!--Cabeçalho do menu--> 
+    <!--Menu principal--> 
+    <!--O menu principal é acionando nos dispostivos moveis pelo botão do collapse-->
+    <div class="collapse navbar-collapse" id="menu-principal"> 
+     <!--Navegação a esquerda-->
+     <ul class="nav navbar-nav">
+        <li> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Cursos<span class="caret"></span></a>
+          <ul class="dropdown-menu list-group" role="menu">
+            <li class="nav-header"><strong>
+              <p class="text-center">Categorias de curso</p>
+              </strong>
+            </li>
+            <li class="list-group-item"><button class="btn btn-sm btn-primary center-block" onClick='window.location.replace("?ctrl=curso&ac=catalogo");'>Ver todos os cursos</button></li>
+            {if !empty($categorias)}
+            	{$cont=0}
+                {foreach $categorias as $categoria}
+                	{if !empty($categoria['categoria']) and ($cont++<15)}<li ><a href="?ctrl=curso&ac=categoria&categoria={$categoria['categoria']}" class="text-center">{$categoria['categoria']}</a></li>{/if}
+            	{/foreach}
+            	<li class="list-group-item"><button class="btn btn-sm btn-primary" href="?ctrl=curso&ac=categoria"  onClick='window.location.replace("?ctrl=curso&ac=categoria");'>Ver todas as categorias</button></li>
+            {else}
+            	<li>&nbsp;&nbsp;&nbsp;Sem categorias</li>
+            {/if}
+          </ul>
+        </li>
+        <li><a href="?ctrl=index&ac=faq">Como funciona</a></li>
+        <li><a href="?ctrl=index&ac=sobre">Sobre</a></li>
+      </ul>
+     <!--Navegação a esquerda-->  
+      
+      <!--Campo de busca-->
+      <form name="form_busca" class="navbar-form navbar-header" method="POST" action="?ctrl=curso&ac=busca">
+        <input type="text" class="form-control" placeholder="Buscar" name="busca">
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+      </form>
+      <!--Campo de busca--> 
+      
+      <!--Navegação a direita-->
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="?ctrl=usuario&ac=cadastrar">Registrar</a></li>
+        <!--Login-->
+        <li class="dropdown"> <a href="login.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Entrar<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li> 
+              <!-- Formulario do login-->
+              <form name="form_login" method="POST" class="navbar-form navbar-header" action="?ctrl=usuario&ac=login">
+                <label>Email</label>
+                <input type="text" name="email" class="form-control" placeholder="Email">
+                <label>Senha</label>
+                <input type="password" name="senha" class="form-control" placeholder="Senha"><hr>
+                <input type="submit" class="btn btn-primary center-block" value="Entrar">
+              </form>
+              
+            </li>
+          </ul>
+          <!-- Formulario do login--> 
+        </li>
+        <!--Login-->
+      </ul>
+      <!--Navegação a direita--> 
+    </div>
+    <!--navbar-collapse --> 
+  </div>
+  <!--container-fluid --> 
+  </nav>
+  <!--navbar-inverse--> 
+{else}
+  <div id="wrapper" class="active">
+  <!-- Sidebar -->
+  <aside id="sidebar-wrapper">
+  <nav id="spy">
+    <ul class="sidebar-nav nav">
+       <li class="sidebar-brand"> <a href="?ctrl=usuario&ac=perfil"><span class="fa fa-user solo">Nome do usuário</span></a> </li>
+      {if $super}
+       <li> <a href="?ctrl=usuario&ac=criarTutor"><span class="fa fa-user {if $link=='criarTutor'}active{/if}">Criar tutor</span></a> </li>
+      {/if}
+      <li> <a href="?ctrl=usuario&ac=perfil"><span class="fa fa-user {if $link=='perfil'}active{/if}">Perfil</span></a> </li>
+      <li> <a href="?ctrl=dashboardCurso&ac=cursos"><span class="fa fa-graduation-cap solo {if $link=='cursos'}active{/if}">Meus cursos</span></a> </li>
+      {if $novo_curso}
+      <li class="sidebar-brand"> <a href="?ctrl=dashboardCurso&ac=cursos"><span class="fa fa-gear">Administração</span></a> </li>
+      <li> <a href="?ctrl=dashboardCurso&ac=cadastrar"><span class="fa fa-graduation-cap {if $link=='curso'}active{/if}">Novo curso</span></a> </li>
+      {/if}
+      {if $editar_curso}
+       <li class="sidebar-brand"> <a href="?ctrl=dashboardCurso&ac=cursos"><span class="fa fa-gear">Administração</span></a> </li>
+      <li> <a href="?ctrl=dashboardCurso&ac=recuperar&curso={$numero_curso}"><span class="fa fa-graduation-cap {if $link=='curso'}active{/if}">Editar Curso</span></a> </li>
+      <li> <a href="?ctrl=dashboardPagina&ac=paginas&curso={$numero_curso}"><span class="fa fa-file-text-o {if $link=='pagina'}active{/if}">Paginas</span></a> </li>
+      <li> <a href="?ctrl=dashboardModulo&ac=modulos&curso={$numero_curso}"><span class="fa fa-list-ol {if $link=='modulo'}active{/if}">Módulos</span></a> </li>
+       
+        	{if $link=='licao'}
+        	<li> <a href="?ctrl=dashboardLicao&ac=licoes&modulo={$modulo}&curso={$numero_curso}"><span class="fa fa-pencil-square-o active">Lições: <i>{$modulo}</i></span></a></li>
+            {/if}
+            {if $link=='conteudo'}
+            <li> <a href="?ctrl=dashboardLicao&ac=licoes&modulo={$modulo}&curso={$numero_curso}"><span class="fa fa-pencil-square-o">Lições: <i>{$modulo}</i></span></a></li>
+            <li> <a href="?ctrl=dashboardLicao&ac=conteudo&modulo={$modulo}&licao={$nome_licao}&curso={$numero_curso}"><span class="fa fa-list active">Conteúdo: {$nome_licao}</i></span></a></li>
+            {/if}
+        
+      	
+      {/if}
+    </ul>
+  </nav>
+  </aside>
+  <!-- Sidebar --> 
+  <!--Menu superior-->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid"> 
+    <!--Cabeçalho do menu-->
+    <div class="navbar-header"> 
+      <!--Botão collapse da navegação móvel-->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Navegação móvel</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <!--Botão collapse para ocultar a sidebar--> 
+      <a id="menu-toggle" href="#" class="glyphicon glyphicon-align-justify btn-menu btn-lg toggle"></a> 
+      <!--Brand com o título do projeto--> 
+      <a class="navbar-brand" href="index.php">Nome do projeto</a> </div>
+    <!--Cabeçalho do menu--> 
+    <!--Menu principal-->
+    <nav id="navbar" class="collapse navbar-collapse"> 
+     <!--Navegação a esquerda-->
+     <ul class="nav navbar-nav">
+        <li> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Cursos<span class="caret"></span></a>
+          <ul class="dropdown-menu list-group" role="menu">
+            <li class="nav-header"><strong>
+              <p class="text-center">Categorias de curso</p>
+              </strong>
+            </li>
+            <li class="list-group-item"><button class="btn btn-sm btn-primary center-block" onClick='window.location.replace("?ctrl=curso&ac=catalogo");'>Ver todos os cursos</button></li>
+            {if !empty($categorias)}
+            	{$cont=0}
+                {foreach $categorias as $categoria}
+                	{if !empty($categoria['categoria']) and ($cont++<15)}<li ><a href="?ctrl=curso&ac=categoria&categoria={$categoria['categoria']}" class="text-center">{$categoria['categoria']}</a></li>{/if}
+            	{/foreach}
+            	<li class="list-group-item"><button class="btn btn-sm btn-primary" href="?ctrl=curso&ac=categoria"  onClick='window.location.replace("?ctrl=curso&ac=categoria");'>Ver todas as categorias</button></li>
+            {else}
+            	<li>&nbsp;&nbsp;&nbsp;Sem categorias</li>
+            {/if}
+          </ul>
+        </li>
+        <li><a href="?ctrl=index&ac=faq">Como funciona</a></li>
+        <li><a href="?ctrl=index&ac=sobre">Sobre</a></li>
+      </ul>
+     <!--Navegação a esquerda-->  
+      
+      
+      <!--Campo de busca-->
+      <form name="form_busca" class="navbar-form navbar-header" method="POST" action="?ctrl=curso&ac=busca">
+        <input type="text" class="form-control" placeholder="Buscar" name="busca">
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+      </form>
+      <!--Campo de busca--> 
+      
+      <!--Navegação a direita-->
+      <ul class="nav navbar-nav navbar-right">
+        <!--Login-->
+        <li class="dropdown"> <a href="?ctrl=usuario&ac=perfil" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{$sessao['usuario']}<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a class="btn" href="?ctrl=dashboardCurso&ac=cursos">Meus cursos</a></li>
+            <li><a class="btn" href="?ctrl=usuario&ac=perfil">Meu perfil</a></li>
+            <li><a class="btn" href="?ctrl=usuario&ac=logof">Sair</a></li>
+          </ul>
+          <!-- Formulario do login--> 
+        </li>
+        <li><i class="fa fa-2x fa-user"></i></li>
+        <!--Login-->
+      </ul>
+      <!--Navegação a direita--> 
+    </nav>
+    <!--Menu principal--> 
+  </div>
+  <!--container-fluid--> 
+  </nav>
+  <!--Menu superior-->
+  <div id="page-content-wrapper">
+  <div class="page-content">
+{/if}

@@ -1,0 +1,32 @@
+@charset "utf-8";
+/*Campo de busca*/
+#busca{
+	padding-top:20px;
+}
+
+/*Correção do texto*/
+@media (max-width: 476PX) {
+  h3 {
+	 font-size: 18px;
+	 magin:0px;
+  }
+  .caption{
+	height:250px;  
+  }
+  .caption hr{
+	margin:0px;
+  }
+  .caption p{
+	font-size: 11px;  
+  }
+  .caption h3{
+	font-size: 18px;
+	magin-top:0px;
+  }
+  .caption a {
+	width:90px; 
+	height:30px; 
+	font-size: 11px;  
+  }
+  
+}

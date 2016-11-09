@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  <link rel="stylesheet" href="view/css/classroom-licao.css"/>
+  <link rel="stylesheet" href="view/css/multimidia.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+    {include file="header.html"} 
+    <!--Conteúdo-->
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                  <div class="col-lg-12 col-md-12">
+                    <h1 class="text-center">Classroom - {$nome_curso[0]['nome']}</h1>
+                    <hr>
+                    <!--Painél-->
+                    <section class="panel panel-default">
+                      <!--Menu do curso-->
+                      <nav class="navbar navbar-default">
+                        <div class="container"> 
+                        <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myDefaultNavbar1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                        </div>
+                        <div class="collapse navbar-collapse" id="myDefaultNavbar1">
+                          <ul class="nav navbar-nav navbar-header">
+                            {foreach $paginas as $pagina}
+                            	<li {if $nome_pagina==$pagina['titulo']} class="active" {/if}><a href="?ctrl=classroom&ac=pagina&curso={$numero_curso}&pagina={$pagina['titulo']}">{$pagina['titulo']}</a></li>
+                            {/foreach}
+                            <li {if $nome_pagina=="Discussao"} class="active" {/if}><a href="?ctrl=classroom&ac=discussao&curso={$numero_curso}">Discussão</a></li>
+                            <li  {if $nome_pagina=="Material Adicional"} class="active" {/if}><a href="?ctrl=classroom&ac=material&curso={$numero_curso}">Material adicional</a></li>
+                            <li  {if $nome_pagina=="Wiki"} class="active" {/if}><a href="?ctrl=classroom&ac=wiki&curso={$numero_curso}">Wiki</a></li>
+                            <li  {if $nome_pagina=="Midia Social"} class="active" {/if}><a href="?ctrl=classroom&ac=midiaSocial&curso={$numero_curso}">Mídia social</a></li>
+                            <li  {if $nome_pagina=="Licao"} class="active" {/if}><a href="?ctrl=licao&ac=licao&curso={$numero_curso}">Lição</a></li>
+                            {if !empty($sessao['usuario']) and $sessao['tipo_usuario']=='aluno'}
+                            <li  {if $nome_pagina=="Progresso"} class="active" {/if}><a href="?ctrl=licao&ac=progresso&curso={$numero_curso}">Progresso</a></li>
+                            {/if}
+                          </ul> 
+                        </div>
+                       </div>
+                      </nav>
+                      <!--Menu do curso--> 
+                      <!--Conteúdo-->
+                      <section class="panel-body row">      
+                        <!--Navegação lateral-->
+                        <aside class="col-md-3">
+           					<nav class="panel-group" id="accordion">
+                              <!--Módulo-->
+                              {if !empty($modulos)}
+                              	{$i=0}
+                                {foreach $modulos as $modulo}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#mod{$i}">
+                                              <i class="glyphicon glyphicon-folder-close"></i>
+                                              {$modulo['modulo']['nome']}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    {$j=$i}
+                                    <div id="mod{$i++}" class="panel-collapse collapse 
+                                    {if $escolha=='home'}
+                                        {if $j==0} 
+                                        	in 
+                                        {/if} 
+                                    {else}
+                                      {if $modulo['modulo']['nome']==$n_modulo} 
+                                         in 
+                                      {/if}
+                                     {/if}">
+                                        <div class="panel-body">
+                                            {if !empty($modulo['licoes'])}
+                                            <table class="table">
+                                               <tr>
+                                                  <td {if $modulo['modulo']['nome']==$escolha} class="active" {/if}>
+                                                    <a href="?ctrl=licao&ac=modulo&curso={$numero_curso}&modulo={$modulo['modulo']['nome']}">{$modulo['modulo']['nome']}</a>
+                                                  </td>
+                                                </tr>
+                                               {foreach $modulo['licoes'] as $licao}
+                                                <tr>
+                                                  <td {if $licao['nome']==$escolha} class="active" {/if}>
+                                                    <i class="glyphicon glyphicon-pencil text-primary"></i>
+                                                    <a href="?ctrl=licao&ac=licao&curso={$numero_curso}&modulo={$modulo['modulo']['nome']}&licao={$licao['nome']}">{$licao['nome']}</a>
+                                                  </td>
+                                                </tr>
+                                                {/foreach}
+                                            </table>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/foreach}
+                              <!--Módulo-->
+                              {/if}
+                            </nav>
+                        </aside >    
+                        <!--Navegação lateral-->
+                        <!--Lição-->
+                        <session class="col-md-9 text-justify">
+                        	 <div class="panel panel-default">
+                                <header class="panel-heading">
+                                  <!--Menu da lição-->
+                                  <nav class="draggable-container">
+                                    <ul class="nav nav-tabs draggable" role="tablist">
+                                      <li role="presentation" class="active">
+                                        <a href="#tab" aria-controls="tab1" role="tab" data-toggle="tab">
+                                          <span class="round-tabs one">
+                                            <i class="fa fa-home"></i>
+                                          </span>
+                                        </a>
+                                      </li>
+                                      {$i=0}
+                                      {if sizeof($conteudo_licao)>0}
+                                        {$percentual=1/sizeof($conteudo_licao)}
+                                      {/if}
+                                      {if !empty($conteudo_licao)}
+                                      	{foreach $conteudo_licao as $conteudo}
+                                        <li role="presentation">
+                                        <a href="#tab{$i++}" aria-controls="tab{$i}" role="tab" data-toggle="tab" onClick='updateCookie("{$sessao["usuario"]}|{$numero_curso}|{$nome_modulo}|{$item[0]["nome"]}",{$percentual},"{$sessao["usuario"]}|{$numero_curso}|{$nome_modulo}|{$item[0]["nome"]}#tab{$i}")'>
+                                          <span class="round-tabs one">
+                                              {if $conteudo['tipo']=='video'}
+                                              <i class="fa fa-video-camera"></i>
+                                              {/if}
+                                              {if $conteudo['tipo']=='pdf'}
+                                              <i class="fa fa-file-pdf-o"></i>
+                                              {/if}
+                                              {if $conteudo['tipo']=='audio'}
+                                              <i class="fa fa-file-audio-o"></i>
+                                              {/if}
+                                              {if $conteudo['tipo']=='imagem'}
+                                              <i class="fa fa-picture-o"></i>
+                                              {/if}
+                                              {if $conteudo['tipo']=='slide'}
+                                              <i class="fa fa-slideshare"></i>
+                                              {/if}
+                                              {if $conteudo['tipo']=='jogo'}
+                                              <i class="fa fa-gamepad"></i>
+                                              {/if}
+                                              {if $conteudo['tipo']=='quiz'}
+                                              <i class="fa fa-question-circle-o"></i>
+                                              {/if}
+                                              {if $conteudo['tipo']=='faq'}
+                                              <i class="fa fa-commenting-o"></i>
+                                              {/if}
+                                          </span>
+                                          </a>
+                                        </li>
+                                        {/foreach}
+                                      {/if}
+                                      
+                                    </ul>
+                                  </nav> 
+                                  <!--Menu da lição-->
+                                </header>
+                                <!--Conteúdo da lição-->
+                                <div class="panel-body">
+                                  <div class="tab-content">
+                                    <!--Lição-->  
+                                    <article class="tab-pane fade in active" id="tab">
+                                     {if !empty($item)}
+                                       <h3 class="text-center">{$item[0]['nome']}</h3>
+                                       <p class="narrow text-center"> Navegue pelo menu superior para visualizar o conteúdo multimídia da lição.</p>
+                                       {if !empty($item[0]['imagem'])}
+                                          <img class="img-responsive center-block" src="controller/temp/{$item[0]['numero_curso']}-{$item[0]['nome']}.jpg"  width="500"/><br>
+                                       {/if}
+                                       {if !empty($item[0]['descricao'])}
+                                       <p class="narrow text-justify">{$item[0]['descricao']}</p>
+                                       {/if}
+                                       {if !empty($item[0]['resumo'])}
+                                       <p class="narrow text-justify">{$item[0]['resumo']}</p>
+                                       {/if}
+                                       {if !empty($item[0]['video']) and ($item[0]['video']!='NULL')}
+                                        <iframe width="560" height="315" src="{$item[0]['video']}" frameborder="0" allowfullscreen class="center-block"></iframe>
+                                       {/if}
+                                     {else}
+                                      	<h3 class="text-center">{$nome_curso[0]['nome']}</h3>
+                                     	<p class="narrow text-center">Navegue pelo menu a esquerda para realizar as lições.</p>
+                                     {/if}
+                                    </article>
+                                    <!--Lição--> 
+                                    {$i=0}
+                                    {if !empty($conteudo_licao)}
+                                    	{foreach $conteudo_licao as $conteudo}
+                                          <article class="tab-pane fade in" id="tab{$i++}">
+                                            <div class="row">
+                                             <div class="col-md-12">
+                                              {foreach $conteudo['itens'] as $item}
+                                              	{if $item['tipo']=='link'}
+                                                	{if $conteudo['tipo']=='imagem'}
+                                                	  {$item['link']}
+                                                	{else}
+                                                	  	<div class="item">{$item['link']}</div>
+                                                	{/if}
+                                                {else}
+                                                	<h3>{$item['indice']}</h3>
+                                                    {$item['conteudo']}
+                                                {/if} 
+                                              {/foreach}
+                                             </div>
+                                            </div>
+                                          </article> 
+                                     	{/foreach}
+                                    {/if}
+                                  </div>
+                                </div>
+                                <!--Conteúdo da lição-->
+                            </div>
+                        </session>
+                        <!--Lição-->
+                      </section>
+                      <!--Conteúdo-->
+                    </section>
+                    <!--Painél-->
+                  </div>
+                </div><!--row main-->
+            </div><!--container-fluid-->
+        </div><!--page-content-->
+    </div><!--page-content-wrapper-->
+    <!--Conteúdo-->
+    <hr>
+    {include file="footer.html"} 
+<!--Interface de scroll da barra de navegação da lição-->
+<script>
+// calculate and set .draggable width
+
+$.fn.draggable_nav_calc = function(options) {
+  return this.each( function(i) {
+    var $element = $(this);
+    if ($element.is(":visible")) {
+      // x or y
+      if (options.axis === "x") {
+        // calculate
+        var navWidth = 1;
+        $element.find("> *").each( function(i) {
+          navWidth += $(this).outerWidth(true);
+        });
+        // set width
+        var parentWidth = $element.parent().width();
+        if (navWidth > parentWidth) {
+          $element.css("width", navWidth);
+        } else {
+          $element.css("width", parentWidth);
+        }
+      } else if (options.axis === "y") {
+        // calculate
+        var navHeight = 1;
+        $element.find("> *").each( function(i) {
+          navHeight += $(this).outerHeight(true);
+        });
+        // set height
+        var parentHeight = $element.parent().width();
+        if (navHeight > parentHeight) {
+          $element.css("height", navHeight);
+        } else {
+          $element.css("height", parentHeight);
+        }
+      }
+    }
+  });
+};
+
+// check inside bounds
+
+$.fn.draggable_nav_check = function() {
+  return this.each( function(i) {
+    var $element = $(this);
+    // calculate
+    var w = $element.width();
+    var pw = $element.parent().width();
+    var maxPosLeft = 0;
+    if (w > pw) {
+      maxPosLeft = - (w - pw);
+    }
+    var h = $element.height();
+    var ph = $element.parent().height();
+    var maxPosTop = 0;
+    if (h > ph) {
+      maxPosTop = h - ph;
+    }
+    // horizontal
+    var left = parseInt($element[0].style.left);
+    if (left > 0) {
+      $element.css("left", 0);
+    } else if (left < maxPosLeft) {
+      $element.css("left", maxPosLeft);
+    }
+    // vertical
+    var top = parseInt($element[0].style.top);
+    if (top > 0) {
+      $element.css("top", 0);
+    } else if (top < maxPosTop) {
+      $element.css("top", maxPosTop);
+    }
+  });
+};
+
+// init draggable nav
+
+$.fn.draggable_nav = function(options) {
+  return this.each( function(i) {
+    var $element = $(this);
+    // calculate first time, after delay to fix resize bugs
+    window.setTimeout( function(e) {
+      $element.draggable_nav_calc(options);
+    }, 100);
+    // on shown tabs recalculate
+    $element.find('[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+      $element.draggable_nav_calc(options);
+    });
+    // on resize recalculate
+    function draggable_nav_resize_after() {
+      clearTimeout($element.data("draggable_nav_timeout"));
+      var timeout = window.setTimeout( function(e) {
+        $element.draggable_nav_calc(options);
+        $element.draggable_nav_check();
+      }, 0);
+      $element.data("draggable_nav_timeout", timeout);
+    }
+    $(window).on('resize', draggable_nav_resize_after);
+    $(window).on('scroll', draggable_nav_resize_after);
+    // center clicked element
+    if ($element.hasClass("draggable-center")) {
+      $element.find('li a[data-toggle="tab"]').on("shown.bs.tab", function(e) {
+        var $container = $(this).parents(".draggable-container");
+        var $li = $(this).parents("li");
+        if (options.axis === "x") {
+            var left = - $li.position().left + $container.outerWidth() / 2 - $li.outerWidth() / 2;
+            $element.css("left", left);
+        } else if (options.axis === "y") {
+            var top = - $li.position().top + $container.outerWidth() / 2 - $li.outerWidth() / 2;
+            $element.css("top", top);
+        }
+        // put inside bounds
+        $element.draggable_nav_check();
+      });
+    }
+  });
+};
+$(".draggable").draggable_nav({
+  axis: 'x' // only horizontally
+});
+
+// jquery ui draggable
+
+$(".draggable").draggable({
+  axis: 'x', // only horizontally
+  drag: function(e, ui) {
+    var $element = ui.helper;
+    // calculate
+    var w = $element.width();
+    var pw = $element.parent().width();
+    var maxPosLeft = 0;
+    if (w > pw) {
+      maxPosLeft = - (w - pw);
+    }
+    var h = $element.height();
+    var ph = $element.parent().height();
+    var maxPosTop = 0;
+    if (h > ph) {
+      maxPosTop = h - ph;
+    }
+    // horizontal
+    if (ui.position.left > 0) {
+      ui.position.left = 0;
+    } else if (ui.position.left < maxPosLeft) {
+      ui.position.left = maxPosLeft;
+    }
+    // vertical
+    if (ui.position.top > 0) {
+      ui.position.top = 0;
+    } else if (ui.position.top < maxPosTop) {
+      ui.position.top = maxPosTop;
+    }
+  }
+});
+
+// jquey draggable also on touch devices
+// http://stackoverflow.com/questions/5186441/javascript-drag-and-drop-for-touch-devices
+
+function touchHandler(e) {
+  var touch = e.originalEvent.changedTouches[0];
+  var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent({
+    touchstart: "mousedown",
+    touchmove: "mousemove",
+    touchend: "mouseup"
+  }[e.type], true, true, window, 1,
+    touch.screenX, touch.screenY,
+    touch.clientX, touch.clientY, false,
+    false, false, false, 0, null);
+  touch.target.dispatchEvent(simulatedEvent);
+}
+function preventPageScroll(e) {
+    e.preventDefault();
+}
+function initTouchHandler($element) {
+  $element.on("touchstart touchmove touchend touchcancel", touchHandler);
+  $element.on("touchmove", preventPageScroll);
+}
+initTouchHandler($(".draggable"));
+</script>
+<!--Interface de scroll da barra de navegação da lição-->
+<!--Cookies para monitorar o progresso da lição-->
+<script>
+//Cria um novo cookie
+function createCookie(name, value) {
+	   var cookie = name + "=" + escape(value) + ";expires=Fri, 31 Dec 9999 23:59:59 GMT; path=localhost/mooc";
+       document.cookie = cookie;
+}
+//Recupera um cookie pelo nome
+function getCookie(name) {
+    var cookies = document.cookie;
+    var prefix = name + "=";
+    var begin = cookies.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = cookies.indexOf(prefix);
+        if (begin != 0) {
+            return null;
+        }
+    } else {
+        begin += 2;
+    }
+    var end = cookies.indexOf(";", begin);
+    if (end == -1) {
+        end = cookies.length;                        
+    }
+    return unescape(cookies.substring(begin + prefix.length, end));
+}
+//Deleta um cookie pelo nome
+function deleteCookie(name) {
+       if (getCookie(name)) {
+              document.cookie = name + "=" + ";expires=Thu, 01-Jan-70 00:00:01 GMT";
+       }
+}
+//Atualiza o cookie
+function updateCookie(name,value,tab) {
+	   if (getCookie(name)) {
+              if(!getCookie(tab)){
+				  createCookie(tab,'0');
+				  var valor = parseFloat(getCookie(name))+value;
+			  	  document.cookie = name + "=" + escape(valor) + ";expires=Fri, 31 Dec 9999 23:59:59 GMT; path=localhost/mooc";
+			  }
+       }
+}
+//Deleta um cookie pelo nome
+function deleteAllCookies() {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+    	var cookie = cookies[i];
+    	var eqPos = cookie.indexOf("=");
+    	var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    	document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+}
+
+//deleteAllCookies();
+
+//Cria o cookie se não existir
+if (!getCookie('{$sessao["usuario"]}|{$numero_curso}|{$nome_modulo}|{$item[0]["nome"]}')) 
+	createCookie('{$sessao["usuario"]}|{$numero_curso}|{$nome_modulo}|{$item[0]["nome"]}','0');
+
+</script>
+<!--Cookies para monitorar o progresso da lição-->
+</body>
+</html>

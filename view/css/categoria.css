@@ -1,0 +1,28 @@
+@charset "utf-8";
+header p{
+	margin-bottom:0px;
+}
+
+session h3{
+	margin-top:0px;
+}
+
+/*Correção do texto*/
+@media (max-width: 476PX) { 
+	p {
+		font-size:12px;
+	} 
+	h2,h3 {
+		margin-left:8px;
+		margin-right:8px;
+		font-size:18px;
+	} 
+	h1{
+		margin-left:8px;
+		margin-right:8px;
+		font-size:30px;
+	}
+}
+
+
+

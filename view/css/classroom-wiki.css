@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* CSS Document */
+.form-inline{
+	margin-top:60px;
+}
+
+.form-inline input{
+	margin:5px;
+}
+
+/*Correção do texto*/
+@media (max-width: 476PX) { 
+	p {
+		font-size:12px;
+		margin-left:10px;
+		margin-right:10px;
+	} 
+	h2,h3,h4 {
+		font-size:18px;
+		margin-left:8px;
+		margin-right:8px;
+	} 
+	h1{
+		margin-left:8px;
+		margin-right:8px;
+		font-size:30px;
+	}
+}
+

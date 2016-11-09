@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  <link rel="stylesheet" href="view/css/dashboard-form.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+    {include file="header.html"} 
+    <!--Conteúdo-->
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                 {if !empty($sucesso)}
+                    <div class="alert alert-success"> 
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+                      <strong>Sucesso!</strong> {$sucesso}
+                    </div>
+                {/if}    
+                {if !empty($fracasso)}
+                  <div class="alert alert-danger"> 
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+                    <strong>Operação mal sucedida!</strong> {$fracasso} Por favor tente novamente.
+                  </div>
+                {/if}    
+                 <!--Cursos dashboard-->
+                 <session class="col-sm-9 col-md-12 col-lg-12 main">
+                    <h1 class="page-header">Módulos do curso</h1>
+                    <a href="?ctrl=dashboardModulo&ac=cadastrar&curso={$numero_curso}" class="btn btn-success">Novo módulo</a>
+                    {if !empty($modulos)}
+                    	{foreach $modulos as $modulo}
+                    		 <!--Módulo-->
+                            <article class="panel panel-default">
+                              <header class="panel-heading">
+                                <h3>{$modulo['nome']}</h3>
+                                <a class="btn btn-md btn-primary" href="?ctrl=dashboardModulo&ac=recuperar&modulo={$modulo['nome']}&curso={$modulo['numero_curso']}">Editar</a>
+                                <a class="btn btn-md btn-danger" href="?ctrl=dashboardModulo&ac=excluir&modulo={$modulo['nome']}&curso={$modulo['numero_curso']}">Excluir</a>
+                                <a class="btn btn-md btn-success" href="?ctrl=dashboardLicao&ac=licoes&modulo={$modulo['nome']}&curso={$modulo['numero_curso']}"><i class="fa fa-pencil-square-o"></i> Lições</a>
+                              </header>
+                              <div class="panel-body">
+                              <p>{$modulo['descricao']}</p>
+                                <p>
+                                {if !empty($modulo['licoes'])}
+                                 <ul>
+                                    {foreach $modulo['licoes'] as $licao}
+                                     <li><i class="fa fa-file-text-o" aria-hidden="true"></i> {$licao['nome']}</li>
+                                    {/foreach} 
+                                 </ul>
+                                 
+                                {/if}
+                                </p>
+                              </div>
+                            </article>
+                            <!--Módulo-->
+                    	{/foreach}
+                    {/if}
+                 </session>
+                 <!--Cursos dashboard-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Conteúdo-->
+    <hr>
+    {include file="footer.html"} 
+</body>
+</html>

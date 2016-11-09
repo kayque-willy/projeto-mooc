@@ -1,0 +1,52 @@
+﻿{if empty($menu_inferior)} 
+<!--Rodapé-->
+</div>
+</div>
+<footer class="panel-footer well">
+  <h3 class="text-center">Nome do projeto</h3>
+  <p class="text-center"> <strong> Mooc Unifei - Trabalho Final de Graduação </strong><br>
+    Kayque Willy Reis de Oliveira<br>
+    Orientador: Dr. Cláudio Kirner<br>
+    Curso de Sistemas de Informação<br>
+    Itajubá - 2016<br>
+  </p>
+</footer>
+</div>
+<!--Rodapé--> 
+{else}
+<!--Menu do rodapé-->
+<nav>
+  <ul class="nav nav-justified navbar-inverse">
+    <li><a href="index.php">Home</a></li>
+    <li><a href="?ctrl=curso&ac=catalogo">Cursos</a></li>
+    <li><a href="?ctrl=index&ac=sobre">Sobre</a></li>
+    <li><a href="?ctrl=index&ac=faq">FAQ</a></li>
+  </ul>
+</nav>
+<!--Menu do rodapé--> 
+<!--Rodapé-->
+<footer class="panel-footer well">
+  <h3 class="text-center">Nome do projeto</h3>
+  <p class="text-center"> <strong> Mooc Unifei - Trabalho Final de Graduação </strong><br>
+    Kayque Willy Reis de Oliveira<br>
+    Orientador: Dr. Cláudio Kirner<br>
+    Universidade Federal de Itajubá - UNIFEI<br>
+    Curso de Sistemas de Informação<br>
+    Itajubá - 2016<br>
+  </p>
+</footer>
+<!--Rodapé--> 
+{/if} 
+<!--Configurações do bootstrap--> 
+<script src="view/js/jquery.min.js"></script> 
+<script src="view/js/bootstrap.min.js"></script> 
+{if !empty($sessao)}
+<!--Sidebar--> 
+<script type="text/javascript">
+	/*Menu-toggle*/
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+    });
+</script> 
+{/if}

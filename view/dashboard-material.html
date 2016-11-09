@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+  <div id="wrapper">
+    <!--Menu superior-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<!--Cabeçalho do menu-->
+            <div class="navbar-header">
+              <!--Botão collapse da navegação móvel-->
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                  <span class="sr-only">Navegação móvel</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <!--Botão collapse para ocultar a sidebar-->
+              <a id="menu-toggle" href="#" class="glyphicon glyphicon-align-justify btn-menu btn-lg toggle"></a>
+              <!--Brand com o título do projeto-->
+              <a class="navbar-brand" href="home.html">Nome do projeto</a>
+			</div>
+            <!--Cabeçalho do menu-->
+			<!--Menu principal-->
+            <nav id="navbar" class="collapse navbar-collapse">
+				<!--Navegação a esquerda-->
+                <ul class="nav navbar-nav">
+                  <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Cursos<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="nav-header"><strong><p class="text-center">Cursos por assunto</p></strong></li>
+                        <a class="btn" href="catalogo.html">Ver todos os cursos</a>
+                        <li class="nav-divider"></li>
+                        <li><a href="#">Categoria</a></li>
+                        <li><a href="#">Categoria</a></li>
+                        <li><a href="#">Categoria</a></li>
+                        <li><a href="#">Categoria</a></li>
+                        <li><a href="#">Categoria</a></li>
+                        <a class="btn" href="catalogo.html">Ver todas as categorias</a>
+                    </ul>
+                  </li>
+                  <li><a href="#">Como funciona</a></li>
+                  <li><a href="#">Sobre</a></li>
+                </ul><!--Navegação a esquerda-->
+                
+                <!--Campo de busca-->
+                <form class="navbar-form navbar-header" role="search" action="catalogo.html">
+                    <input type="text" class="form-control" placeholder="Buscar" name="busca">
+                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                </form><!--Campo de busca-->
+               
+                <!--Navegação a direita-->
+                <ul class="nav navbar-nav navbar-right">
+                  <li><i class="fa fa-2x fa-user"></i></li>
+                  <!--Login-->
+                  <li class="dropdown"> 
+                    <a href="dashboard.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nome do usuário<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a class="btn">Meus cursos</a></li>
+                      <li><a class="btn">Meu perfil</a></li>
+                      <li><a class="btn">Sair</a></li>
+                    </ul><!-- Formulario do login-->
+                  </li><!--Login-->
+                </ul><!--Navegação a direita-->
+			</nav>
+             <!--Menu principal-->
+		</div><!--container-fluid-->
+	</nav>
+    <!--Menu superior-->
+    <!-- Sidebar -->
+    <aside id="sidebar-wrapper">
+    <nav id="spy">
+      <ul class="sidebar-nav nav">
+        <li class="sidebar-brand"> <a href="dashboard.html" ><span class="fa fa-user">Nome do usuário</span></a> </li>
+        <li> <a href="dashboard.html" ><span class="fa fa-graduation-cap caption">Meus cursos</span></a> </li>
+        <li> <a href="dashboard-perfil.html"><span class="fa fa-user">Perfil</span></a> </li>
+        <li class="sidebar-brand"> <a href="dashboard-curso-cadastro.html"><span class="fa fa-gear">Administração</span></a> </li>
+        <li> <a href="dashboard-curso-cadastro.html"><span class="fa fa-graduation-cap">Curso</span></a> </li>
+        <li> <a href="dashboard-material.html"><span class="fa fa-book active">Material adicional</span></a> </li>
+        <li> <a href="dashboard-pagina.html"><span class="fa fa-file-text-o">Paginas</span></a> </li>
+        <li> <a href="dashboard-modulo.html"><span class="fa fa-list-ol">Módulos</span></a> </li>
+      </ul>
+    </nav>
+  </aside>
+    <!-- Sidebar --> 
+    <!--Conteúdo-->
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                 <!--Recursos adicionais dashboard-->
+                 <session class="col-sm-9 col-md-12 col-lg-12 main">
+                    <h1 class="page-header">Recursos adicionais do curso</h1>
+                   	<form id="modulo-recurso" role="form" method="POST" action="#" autocomplete="off">
+                      <legend>Recursos</legend>
+                      <!--Sessão-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label pull-left" for="Nome">Sessão</label>
+                        <div class="col-md-10">
+                           <textarea class="form-control" id="cp" rows="13" name="cp" placeholder="Resumo da sessão" style="resize:none;"></textarea>
+                        </div>
+                      </fieldset>
+                      <!--Sessão-->
+                      <!--Recursos-->
+                      <fieldset class="row form-group">
+                        <label class="col-md-2 control-label pull-left" >Recursos do módulo</label>
+                        <div class="col-md-10">
+                          <div class="form-group multiple-form-group">
+                              <div class="form-group input-group">
+                                  <input name="rec[]" class="form-control" rows="3" placeholder="Nome do recurso">
+                                  <hr>
+                                  <input name="rec_link[]" class="form-control" rows="3" placeholder="Url">
+                                  <span class="input-group-btn ">
+                                    <button type="button" class="btn btn-default btn-add btn-success"><i class="glyphicon glyphicon-plus"></i></button>
+                                  </span>
+                              </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <!--Recursos-->
+                      <!--Enviar-->  
+                      <ul class="list-inline pull-right">
+                        <li>
+                          <button type="button" class="btn btn-primary btn-success">Salvar</button>
+                        </li>
+                      </ul>
+                      <!--Enviar-->  
+                    </form>
+                 </session>
+                 <!--Recursos adicionais dashboard-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Conteúdo-->
+    <hr>
+    <!--Rodapé-->
+    <footer class="panel-footer well">
+      <h3 class="text-center">Nome do projeto</h3>
+      <p class="text-center">
+          <strong>
+            Mooc Unifei - Trabalho Final de Graduação
+          </strong><br>
+          Kayque Willy Reis de Oliveira<br>
+          Curso de Sistemas de Informação<br>
+          Itajubá - 2016<br>
+      </p>
+    </footer>
+    <!--Rodapé--> 
+  </div>
+<!--Configurações do bootstrap-->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--Sidebar-->
+<script type="text/javascript">
+	/*Menu-toggle*/
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+    });
+</script>
+<!--Opções do curso-->
+<script>
+	$("[data-toggle=popover]").popover({
+    html: true, 
+	content: function() {
+          return $('#popover-content').html();
+        }
+	});
+	$(document).ready(function(){
+		$('[data-toggle="popover"]').popover();
+	});
+</script>
+<!--Campos múltiplos-->
+<script type="text/javascript">
+(function ($) {
+    $(function () {
+
+        var addFormGroup = function (event) {
+            event.preventDefault();
+
+            var $formGroup = $(this).closest('.form-group');
+            var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+            var $formGroupClone = $formGroup.clone();
+
+            $(this)
+                .toggleClass('btn-default btn-add btn-danger btn-remove')
+                .html('<i class="glyphicon glyphicon-minus"></i>');
+
+            $formGroupClone.find('input').val('');
+            $formGroupClone.insertAfter($formGroup);
+
+            var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last');
+            if ($multipleFormGroup.data('max') <= countFormGroup($multipleFormGroup)) {
+                $lastFormGroupLast.find('.btn-add').attr('disabled', true);
+            }
+        };
+
+        var removeFormGroup = function (event) {
+            event.preventDefault();
+
+            var $formGroup = $(this).closest('.form-group');
+            var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+
+            var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last');
+            if ($multipleFormGroup.data('max') >= countFormGroup($multipleFormGroup)) {
+                $lastFormGroupLast.find('.btn-add').attr('disabled', false);
+            }
+
+            $formGroup.remove();
+        };
+
+        var countFormGroup = function ($form) {
+            return $form.find('.form-group').length;
+        };
+
+        $(document).on('click', '.btn-add', addFormGroup);
+        $(document).on('click', '.btn-remove', removeFormGroup);
+
+    });
+})(jQuery);
+</script>
+<!--Campos múltiplos-->
+</body>
+</html>

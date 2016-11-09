@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<!--Titulo e descrição-->
+<title>Projeto MOOC</title>
+<meta charset="utf-8"/>
+<meta name="description" content="Projeto MOOC - TFG Kayque"/>
+<!--Configurações do bootstrap-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+<!--Folhas de estilo-->
+<link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+<link rel="stylesheet" href="view/css/dashboard.css"/>
+<link rel="stylesheet" href="view/css/dashboard-curso.css"/>
+<!--Icones-->
+<link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+{include file="header.html"} 
+<!--Conteúdo-->
+<div class="container-fluid">
+  <div class="row main">
+    <section class="col-sm-9 col-md-12 col-lg-12 wizard">
+      <h1 class="text-center">Administração de curso</h1>
+      <!--Navegação-->
+      <div class="wizard-inner">
+        <div class="connecting-line"></div>
+        <ul class="nav nav-tabs" role="tablist">
+          <!--Passo-->
+          <li role="presentation" class="active"> 
+          <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1"> 
+          <span class="round-tab"> 
+          <i class="glyphicon glyphicon-folder-open"></i> 
+          </span> 
+          </a> 
+          </li>
+          <!--Passo--> 
+          <!--Passo-->
+          <li role="presentation" > <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2"> <span class="round-tab"> <i class="glyphicon glyphicon-pencil"></i> </span> </a> </li>
+          <!--Passo--> 
+          <!--Passo-->
+          <li role="presentation"> <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3"> <span class="round-tab"> <i class="glyphicon glyphicon-pencil"></i> </span> </a> </li>
+          <!--Passo--> 
+          <!--Passo-->
+          <li role="presentation" > <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete"> <span class="round-tab"> <i class="glyphicon glyphicon-ok"></i> </span> </a> </li>
+          <!--Passo-->
+        </ul>
+      </div>
+      <!--Navegação--> 
+      <!--Formulário-->
+      <form id="curso" role="form" method="POST" action="#" class="tab-content" autocomplete="off" enctype="multipart/form-data">
+        {if !empty($curso[0]['numero'])} 
+        	<input type="hidden" name="numero" value="{$curso[0]['numero']}"/>
+        {/if}
+        <!--Etapa-->
+        <div class="tab-pane active" role="tabpanel" id="step1">
+          <legend>Dados do curso</legend>
+          <!--Nome-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Nome do curso</label>
+            <div class="col-md-10">
+              <input id="Nome" name="nome" type="text" 
+              placeholder="Nome do curso" class="form-control input-md" required="" {if !empty($curso[0]['nome'])} value="{$curso[0]['nome']}" {/if} >
+            </div>
+          </fieldset>
+          <!--Nome--> 
+          <!--Foto-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label" for="Foto">Foto</label>
+            <img class="col-md-2 img-rounded" src="{if !empty($curso[0]['imagem'])} controller/temp/{$curso[0]['numero']}.jpg {else}http://www.freeiconspng.com/uploads/no-image-icon-13.png{/if}"  width="50"/><br>
+            <div class="col-md-8">
+              <input id="Foto" name="foto" class="input-file" type="file">
+            </div>
+          </fieldset>
+          <!--Foto--> 
+          <!--Video-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Video</label>
+            <div class="col-md-10">
+              <div class="row ">
+                <div class="col-md-12 form-group"> 
+                	{if $curso[0]['video']!='NULL' && !empty($curso[0]['video'])}
+                    <iframe width="560" height="315" src="{$curso[0]['video']}" frameborder="0" allowfullscreen></iframe>
+                  {else}
+                    <img class="img-rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Wikiversity-Mooc-Icon-Video.svg/2000px-Wikiversity-Mooc-Icon-Video.svg.png"  width="180"/> 
+                  {/if}
+                </div>
+                <hr>
+                <div class="col-md-12">
+                  <input id="video" name="video" type="text" placeholder="Url do video" class="form-control input-md" required="" {if $curso[0]['video']!='NULL'} value="{$curso[0]['video']}" {/if}>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <!--Video--> 
+          <!--Licença-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Licença</label>
+            <div class="col-md-10 cc-selector">
+              <div class="row">
+                <div class="col-md-2">
+                  <input id="L1" type="radio" name="licenca" value="CC BY" {if !empty($curso[0]['licenca'])} 
+                  {if $curso[0]['licenca']=="CC BY"} checked {/if}{/if}/>
+                  <label class="drinkcard-cc L1" for="L1" ></label>
+                </div>
+                <div class="col-md-3">
+                  <input id="L2" type="radio" name="licenca" value="CC BY-SA" {if !empty($curso[0]['licenca'])} 
+                  {if $curso[0]['licenca']=="CC BY-SA"} checked {/if}{/if} />
+                  <label class="drinkcard-cc L2" for="L2"></label>
+                  <br>
+                  <input id="L3" type="radio" name="licenca" value="CC BY-ND" {if !empty($curso[0]['licenca'])} 
+                  {if $curso[0]['licenca']=="CC BY-ND"} checked {/if}{/if} />
+                  <label class="drinkcard-cc L3" for="L3"></label>
+                  <br>
+                  <input id="L4" type="radio" name="licenca" value="CC BY-NC" {if !empty($curso[0]['licenca'])} 
+                  {if $curso[0]['licenca']=="CC BY-NC"} checked {/if}{/if}/>
+                  <label class="drinkcard-cc L4" for="L4"></label>
+                </div>
+                <div class="col-md-7">
+                  <input id="L5" type="radio" name="licenca" value="CC BY-NC-SA" {if !empty($curso[0]['licenca'])} 
+                  {if $curso[0]['licenca']=="CC BY-NC-SA"} checked {/if}{/if}/>
+                  <label class="drinkcard-cc L5" for="L5"></label>
+                  <br>
+                  <input id="L6" type="radio" name="licenca" value="CC BY-NC-ND" {if !empty($curso[0]['licenca'])} 
+                  {if $curso[0]['licenca']=="CC BY-NC-ND"} checked {/if}{/if} />
+                  <label class="drinkcard-cc L6" for="L6"></label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <!--Licença--> 
+          <!--Categoria-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Categoria</label>
+            <div class="col-md-10">
+              <input id="categoria" name="categoria" type="text" placeholder="Categoria do curso" class="form-control input-md" required="" {if !empty($curso[0]['categoria'])} value="{$curso[0]['categoria']}" {/if}>
+            </div>
+          </fieldset>
+          <!--Categoria--> 
+          <!--Instituição-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Instituição</label>
+            <div class="col-md-10">
+              <input id="instituicao" name="instituicao" type="text" placeholder="Instituição" class="form-control input-md" required="" {if !empty($curso[0]['instituicao'])} value="{$curso[0]['instituicao']}" {/if}>
+            </div>
+          </fieldset>
+          <!--Instituição--> 
+          <!--Descrição-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Descricao_curta">Descrição curta</label>
+            <div class="col-md-10">
+              <textarea class="form-control" id="descricao" rows="13" name="descricao_curta" placeholder="Descrição curta" style="resize:none;" maxlength="400">{if !empty($curso[0]['descricao_curta'])}{$curso[0]['descricao_curta']}{/if}</textarea>
+            </div>
+          </fieldset>
+          <!--Descrição--> 
+          <!--Próximo passo-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="button" class="btn btn-primary next-step">Salvar e continuar</button>
+            </li>
+          </ul>
+          <!--Próximo passo--> 
+        </div>
+        <!--Etapa--> 
+        <!--Etapa-->
+        <div class="tab-pane" role="tabpanel" id="step2">
+          <legend>Perfil do aluno</legend>
+          <!--Pré-requisitos-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Pré-requisitos</label>
+            <div class="col-md-10">
+              <input id="pre-requisitos" name="pre-requisitos" type="text" placeholder="Pré-requisitos" class="form-control input-md" required="" {if !empty($curso[0]['pre_requisito'])} value="{$curso[0]['pre_requisito']}" {/if}>
+            </div>
+          </fieldset>
+          <!--Pré-requisitos--> 
+          <!--Nível-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Nível</label>
+            <div class="col-md-10">
+              <select class="form-control" name=nivel>
+                 <option {if !empty($curso[0]['nivel'])} {if $curso[0]['nivel']=='fundamental'}selected{/if}{/if}>fundamental</option>
+                <option {if !empty($curso[0]['nivel'])} {if $curso[0]['nivel']=='médio'}selected{/if}{/if}>médio</option>
+                <option {if !empty($curso[0]['nivel'])} {if $curso[0]['nivel']=='técnico'}selected{/if}{/if}>técnico</option>
+                <option {if !empty($curso[0]['nivel'])} {if $curso[0]['nivel']=='superior'}selected{/if}{/if}>superior</option>
+              </select>
+            </div>
+          </fieldset>
+          <!--Nível--> 
+          <!--Compromisso-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Compromisso</label>
+            <div class="col-md-10">
+              <input id="compromisso" name="compromisso" type="text" placeholder="Compromisso" class="form-control input-md" required="" {if !empty($curso[0]['compromisso'])} value="{$curso[0]['compromisso']}" {/if}>
+            </div>
+          </fieldset>
+          <!--Compromisso--> 
+          <!--Carga horária-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="Nome">Carga horária</label>
+            <div class="col-md-10">
+              <input id="ch" name="ch" type="number" placeholder="Carga horária em numero de horas" class="form-control input-md" required="" {if !empty($curso[0]['carga_horaria'])} value="{$curso[0]['carga_horaria']}" {/if}>
+            </div>
+          </fieldset>
+          <!--Carga horária--> 
+          <!--Próximo passo-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="button" class="btn btn-default prev-step">Anterior</button>
+            </li>
+            <li>
+              <button type="button" class="btn btn-primary next-step">Salvar e continuar</button>
+            </li>
+          </ul>
+          <!--Próximo passo--> 
+        </div>
+        <!--Etapa--> 
+        <!--Etapa-->
+        <div class="tab-pane" role="tabpanel" id="step3">
+          <legend>Detalhes do curso</legend>
+          <!--Descrição-->
+          <fieldset class="row form-group">
+            <label class="col-md-12 control-label pull-left" for="Nome">Descrição</label>
+            <div class="col-md-12">
+              <textarea class="form-control" id="descricao" rows="13" name="descricao" placeholder="Descrição" style="resize:none;">{if !empty($curso[0]['descricao'])}{$curso[0]['descricao']}{/if}</textarea>
+            </div>
+          </fieldset>
+          <!--Descrição--> 
+          <!--Conteúdo programático-->
+          <fieldset class="row form-group">
+            <label class="col-md-12 control-label pull-left" for="Nome">Conteúdo programático</label>
+            <div class="col-md-12">
+              <textarea class="form-control" id="cp" rows="13" name="cp" placeholder="Conteúdo programático do curso" style="resize:none;">{if !empty($curso[0]['conteudo_programatico'])}{$curso[0]['conteudo_programatico']}{/if}</textarea>
+            </div>
+          </fieldset>
+          <!--Conteúdo programático--> 
+          <!--FAQ-->
+          <fieldset class="row form-group">
+            <div class="col-md-12">
+              <div class="form-group multiple-form-group">
+                <label>Perguntas frequentes</label>
+                {if !empty($FAQ) or !empty($FAQ_last)}
+                    {foreach $FAQ as $pergunta}
+                        <div class="form-group input-group">
+                      <textarea name="faq[]" class="form-control" rows="3" placeholder="Pergunta" style="resize:none;">{$pergunta['pergunta']}</textarea>
+                      <br>
+                      <hr>
+                      <br>
+                      <textarea name="resp[]" class="form-control" rows="3" placeholder="Resposta" style="resize:none;">{$pergunta['resposta']}</textarea>
+                      <span class="input-group-btn ">
+                      <button type="button" class="btn btn-success btn-danger btn-remove"><i class="glyphicon glyphicon-minus"></i></button>
+                      </span> 
+                    </div>
+                    {/foreach}
+                	<div class="form-group input-group">
+                  <textarea name="faq[]" class="form-control" rows="3" placeholder="Pergunta" style="resize:none;">{$FAQ_last['pergunta']}</textarea>
+                  <br>
+                  <hr>
+                  <br>
+                  <textarea name="resp[]" class="form-control" rows="3" placeholder="Resposta" style="resize:none;">{$FAQ_last['resposta']}</textarea>
+                  <span class="input-group-btn ">
+                  <button type="button" class="btn btn-default btn-add btn-success"><i class="glyphicon glyphicon-plus"></i></button>
+                  
+                  </span> 
+                  </div>
+                {else}
+                    <div class="form-group input-group">
+                      <textarea name="faq[]" class="form-control" rows="3" placeholder="Pergunta" style="resize:none;"></textarea>
+                      <br>
+                      <hr>
+                      <br>
+                      <textarea name="resp[]" class="form-control" rows="3" placeholder="Resposta" style="resize:none;"></textarea>
+                      <span class="input-group-btn ">
+                      <button type="button" class="btn btn-default btn-add btn-success"><i class="glyphicon glyphicon-plus"></i></button>
+                      
+                      </span> 
+                      </div>
+                {/if}
+              </div>
+            </div>
+          </fieldset>
+          <!--FAQ--> 
+          <!--Próximo passo-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="button" class="btn btn-default prev-step">Anterior</button>
+            </li>
+            <li>
+              <button type="button" class="btn btn-default next-step">Pular</button>
+            </li>
+            <li>
+              <button type="button" class="btn btn-primary btn-info-full next-step">Salvar e continuar</button>
+            </li>
+          </ul>
+          <!--Próximo passo--> 
+        </div>
+        <!--Etapa--> 
+        <!--Conclusão-->
+        <div class="tab-pane" role="tabpanel" id="complete">
+          <h3>Concluído</h3>
+          <p>Você completou com sucessso todos os passos.</p>
+          <p>Agora você enivar as alterações.</p>
+          <!--Enviar-->
+          <ul class="list-inline pull-right">
+            <li>
+              <input type="submit" class="btn btn-success" onClick="document.forms['curso'].submit()"/>
+            </li>
+          </ul>
+          <!--Enviar--> 
+        </div>
+        <!--Conclusão-->
+        <div class="clearfix"></div>
+      </form>
+      <!--Formulário--> 
+    </section>
+  </div>
+</div>
+<!--Conteúdo-->
+<hr>
+{include file="footer.html"} 
+<!--Formulario do curso--> 
+<script>
+	$(document).ready(function () {
+    //Initialize tooltips
+    $('.nav-tabs > li a[title]').tooltip();
+    
+    //Wizard
+    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+
+        var $target = $(e.target);
+    
+        if ($target.parent().hasClass('disabled')) {
+            return false;
+        }
+    });
+
+    $(".next-step").click(function (e) {
+
+        var $active = $('.wizard .nav-tabs li.active');
+        $active.next().removeClass('disabled');
+        nextTab($active);
+
+    });
+    $(".prev-step").click(function (e) {
+
+        var $active = $('.wizard .nav-tabs li.active');
+        prevTab($active);
+
+    });
+});
+
+function nextTab(elem) {
+    $(elem).next().find('a[data-toggle="tab"]').click();
+}
+function prevTab(elem) {
+    $(elem).prev().find('a[data-toggle="tab"]').click();
+}
+</script> 
+<!--Campos múltiplos--> 
+<script type="text/javascript">
+(function ($) {
+    $(function () {
+
+        var addFormGroup = function (event) {
+            event.preventDefault();
+
+            var $formGroup = $(this).closest('.form-group');
+            var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+            var $formGroupClone = $formGroup.clone();
+
+            $(this)
+                .toggleClass('btn-default btn-add btn-danger btn-remove')
+                .html('<i class="glyphicon glyphicon-minus"></i>');
+
+            $formGroupClone.find('input').val('');
+            $formGroupClone.insertAfter($formGroup);
+
+            var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last');
+            if ($multipleFormGroup.data('max') <= countFormGroup($multipleFormGroup)) {
+                $lastFormGroupLast.find('.btn-add').attr('disabled', true);
+            }
+        };
+
+        var removeFormGroup = function (event) {
+            event.preventDefault();
+
+            var $formGroup = $(this).closest('.form-group');
+            var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+
+            var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last');
+            if ($multipleFormGroup.data('max') >= countFormGroup($multipleFormGroup)) {
+                $lastFormGroupLast.find('.btn-add').attr('disabled', false);
+            }
+
+            $formGroup.remove();
+        };
+
+        var countFormGroup = function ($form) {
+            return $form.find('.form-group').length;
+        };
+
+        $(document).on('click', '.btn-add', addFormGroup);
+        $(document).on('click', '.btn-remove', removeFormGroup);
+
+    });
+})(jQuery);
+</script> 
+<!--Campos múltiplos-->
+</body>
+</html>

@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+   <link rel="stylesheet" href="view/css/classroom-discussao.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>      
+    {include file="header.html"} 
+    <!--Conteúdo-->
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                  <section class="col-lg-12 col-md-12 comment-list">
+                    <h1 class="text-center">Classroom - {$nome_curso[0]['nome']}</h1>
+                    <!--Painél-->
+                    <hr>
+                    <div class="panel panel-default">
+                      <!--Menu do curso-->
+                      <nav class="navbar navbar-default">
+                        <div class="container"> 
+                        <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myDefaultNavbar1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                        </div>
+                        <div class="collapse navbar-collapse" id="myDefaultNavbar1">
+                          <ul class="nav navbar-nav navbar-header">
+                            {foreach $paginas as $pagina}
+                            	<li {if $nome_pagina==$pagina['titulo']} class="active" {/if}><a href="?ctrl=classroom&ac=pagina&curso={$numero_curso}&pagina={$pagina['titulo']}">{$pagina['titulo']}</a></li>
+                            {/foreach}
+                            <li {if $nome_pagina=="Discussao"} class="active" {/if}><a href="?ctrl=classroom&ac=discussao&curso={$numero_curso}">Discussão</a></li>
+                            <li  {if $nome_pagina=="Material Adicional"} class="active" {/if}><a href="?ctrl=classroom&ac=material&curso={$numero_curso}">Material adicional</a></li>
+                            <li  {if $nome_pagina=="Wiki"} class="active" {/if}><a href="?ctrl=classroom&ac=wiki&curso={$numero_curso}">Wiki</a></li>
+                            <li  {if $nome_pagina=="Midia Social"} class="active" {/if}><a href="?ctrl=classroom&ac=midiaSocial&curso={$numero_curso}">Mídia social</a></li>
+                            <li  {if $nome_pagina=="Licao"} class="active" {/if}><a href="?ctrl=licao&ac=licao&curso={$numero_curso}">Lição</a></li>
+                            {if !empty($sessao['usuario']) and $sessao['tipo_usuario']=='aluno'}
+                            <li  {if $nome_pagina=="Progresso"} class="active" {/if}><a href="?ctrl=licao&ac=progresso&curso={$numero_curso}">Progresso</a></li>
+                            {/if}
+                          </ul> 
+                        </div>
+                       </div>
+                      </nav>
+                      <!--Menu do curso--> 
+                      <!--Conteúdo-->
+                      <section class="panel-body text-justify ">
+                         <!--Cabeçalho-->
+                        <header class="row page-header">
+                          <h2 class="col-md-7">Discussão</h2>
+                          <div class="col-md-4">
+                           <!-- <form class="navbar-form navbar-header pull-right" role="search" action="#">
+                              <input type="text" class="form-control" placeholder="Buscar" name="busca">
+                              <button type="input" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                            </form>-->
+                          </div>
+                          {if !empty($sessao)}
+                            <div class="col-md-1">
+                              <button  data-toggle="modal" data-target="#novoTopico" class="btn btn-md btn-primary pull-right" >Novo tópico</button>
+                            </div>
+                          {/if}
+                        </header>
+                        <!--Cabeçalho-->
+                        {if !empty($topicos)}
+                          {foreach $topicos as $topico}
+                          <!-- First Comment -->
+                          <article class="row">
+                            <div class="col-md-2 col-sm-2 hidden-xs">
+                              <figure class="thumbnail">
+                                <img class="img-responsive" src="controller/temp/{$topico['email_aluno']}.jpg"/>
+                              </figure>
+                            </div>
+                            <div class="col-md-10 col-sm-10">
+                              <div class="panel panel-default arrow left">
+                                <div class="panel-body">
+                                  <header class="text-left">
+                                    <div class="comment-user"><i class="fa fa-user"></i><strong>{$topico['email_aluno']}</strong></div>
+                                    <time class="comment-date"><i class="fa fa-clock-o"></i>{$topico['data']|date_format}</time>
+                                  </header>
+                                  <div class="comment-post">
+                                    <p id="post{$topico['numero']}" data-id="{$topico['assunto']}">{$topico['assunto']}</p>
+                                  </div>
+                                  {if !empty($sessao)}
+                                    {if $sessao['usuario']==$topico['email_aluno']}
+                                    <form method="POST" class="text-right" action="?ctrl=classroom&ac=removerTopico&curso={$numero_curso}" >
+                                      <input type="hidden" name="numero" value="{$topico['numero']}">
+                                       <a data-toggle="modal" data-target="#editar" data-id="{$topico['numero']}" class="open-editar btn btn-primary btn-sm"><i class="fa fa-reply"></i>Editar</a>
+                                      <button type="submit" class="btn btn-danger btn-sm">Apagar</button>
+                                    </form>
+                                    {/if}
+                                  {/if}
+                                  {if !empty($sessao)}
+                                    <p class="text-right"><a data-toggle="modal" data-target="#resposta" data-id="{$topico['numero']}" class="open-resposta btn btn-default btn-sm"><i class="fa fa-reply"></i>Responder</a></p>
+                                  {/if}
+                                </div>
+                              </div>
+                            </div>
+                          </article>
+                          {if !empty($topico['resposta'])}
+                            {foreach $topico['resposta'] as $resposta}
+                            <!-- Second Comment Reply -->
+                            <article class="row">
+                              <div class="col-md-2 col-sm-2 col-md-offset-1 col-sm-offset-0 hidden-xs">
+                                <figure class="thumbnail">
+                                  <img class="img-responsive" src="controller/temp/{$resposta['email_aluno']}.jpg"/>
+                                </figure>
+                              </div>
+                              <div class="col-md-9 col-sm-9">
+                                <div class="panel panel-default arrow left">
+                                  <div class="panel-heading right">Reposta</div>
+                                  <div class="panel-body">
+                                    <header class="text-left">
+                                      <div class="comment-user"><i class="fa fa-user"></i><strong>{$resposta['email_aluno']}</strong></div>
+                                      <time class="comment-date"><i class="fa fa-clock-o"></i>{$resposta['data']|date_format}</time>
+                                    </header>
+                                    <div class="comment-post">
+                                      <p id="post{$resposta['numero']}" data-id="{$resposta['assunto']}">{$resposta['assunto']}</p>
+                                    </div>
+                                    {if !empty($sessao)}
+                                      {if $sessao['usuario']==$resposta['email_aluno']}
+                                        <form method="POST" class="text-right" action="?ctrl=classroom&ac=removerTopico&curso={$numero_curso}" >
+                                          <input type="hidden" name="numero" value="{$resposta['numero']}">
+                                           <a data-toggle="modal" data-target="#editar" data-id="{$resposta['numero']}" class="open-editar btn btn-primary btn-sm"><i class="fa fa-reply"></i>Editar</a>
+                                          <button type="submit" class="btn btn-danger btn-sm">Apagar</button>
+                                        </form>
+                                      {/if}
+                                    {/if}
+                                  </div>
+                                </div>
+                              </div>
+                            </article>
+                            <!-- Second Comment Reply -->
+                            {/foreach}
+                          {/if}
+                          {/foreach}
+                         {else}
+                         <br>
+                         	<h4>Sem tópicos!</h4>
+                         {/if}
+                       </section>
+                      <!--Conteúdo-->
+                    </div>
+                    <!--Painél-->
+                  </section>
+                </div><!--row main-->
+            </div><!--container-fluid-->
+        </div><!--page-content-->
+    </div><!--page-content-wrapper-->
+    <!--Conteúdo-->
+    <!--Modal novo tópico-->
+    <div class="modal fade" id="novoTopico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+        <h3 class="modal-title">Novo tópico</h3>
+      </div>
+      <div class="modal-body">
+         <form  method="POST" action="?ctrl=classroom&ac=novoTopico&curso={$numero_curso}" class="tab-content" autocomplete="off">
+          <input type="hidden" name="numero_curso" class="rating" value="{$numero_curso}">
+          <input type="hidden" name="email_aluno" class="rating" value="{$sessao['usuario']}">
+          <!--Comentario-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="comentario">Comentario</label>
+            <div class="col-md-10">
+              <textarea class="form-control" id="comentario" rows="13" name="assunto" placeholder="Escreve seu comentario" style="resize:none;" maxlength="400"></textarea>
+            </div>
+          </fieldset>
+          <!--Comentario-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="submit" class="btn btn-primary pull-left">Enviar</button>
+            </li>
+          </ul>
+        </form>
+        <br>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--Modal novo tópico-->
+    <!--Modal responder topico-->
+    <div class="modal fade" id="resposta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+        <h3 class="modal-title">Responder tópico</h3>
+      </div>
+      <div class="modal-body">
+          <form  method="POST" action="?ctrl=classroom&ac=responderTopico&curso={$numero_curso}" class="tab-content" autocomplete="off">
+          <input type="hidden" name="numero_curso" class="rating" value="{$numero_curso}">
+          <input type="hidden" name="email_aluno" class="rating" value="{$sessao['usuario']}">
+          <input type="hidden" name="numero" id="numero" value=""/>
+          <!--Comentario-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="comentario">Resposta</label>
+            <div class="col-md-10">
+              <textarea class="form-control" rows="13" name="assunto" placeholder="Escreve seu comentario" style="resize:none;" maxlength="400"></textarea>
+            </div>
+          </fieldset>
+          <!--Comentario-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="submit" class="btn btn-primary pull-left">Enviar</button>
+            </li>
+          </ul>
+        </form>
+        <br>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--Modal responder topico-->
+    <!--Modal editar topico-->
+    <div class="modal fade" id="editar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+        <h3 class="modal-title">Editar tópico</h3>
+      </div>
+      <div class="modal-body">
+          <form  method="POST" action="?ctrl=classroom&ac=editarTopico&curso={$numero_curso}" class="tab-content" autocomplete="off">
+          <input type="hidden" name="numero_curso" class="rating" value="{$numero_curso}">
+          <input type="hidden" name="email_aluno" class="rating" value="{$sessao['usuario']}">
+          <input type="hidden" name="numero" id="numero" value=""/>
+          <!--Comentario-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="comentario">Resposta</label>
+            <div class="col-md-10">
+              <textarea class="form-control" rows="13" name="assunto" id="assunto" placeholder="Escreve seu comentario" style="resize:none;" maxlength="400"></textarea>
+            </div>
+          </fieldset>
+          <!--Comentario-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="submit" class="btn btn-primary pull-left">Enviar</button>
+            </li>
+          </ul>
+        </form>
+        <br>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--Modal editar topico-->
+    <hr>
+    {include file="footer.html"} 
+    <script>
+    $(document).on("click", ".open-resposta", function () {
+		 var numero = $(this).data('id');
+		 $(".modal-body #numero").val( numero );
+	});
+
+	$(document).on("click", ".open-editar", function () {
+     	var numero = $(this).data('id');
+     	var texto = $("#post"+numero).data('id');
+		$(".modal-body #numero").val(numero);
+		$(".modal-body #assunto").val(texto);
+	});
+    </script>
+</body>
+</html>

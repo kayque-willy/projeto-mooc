@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<!--Titulo e descrição-->
+<title>Projeto MOOC</title>
+<meta charset="utf-8"/>
+<meta name="description" content="Projeto MOOC - TFG Kayque"/>
+<!--Configurações do bootstrap-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+<!--Folhas de estilo-->
+<link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+<link rel="stylesheet" href="view/css/dashboard.css"/>
+<link rel="stylesheet" href="view/css/dashboard-form.css"/>
+<!--Icones-->
+<link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+{include file="header.html"} 
+<!--Conteúdo-->
+<div id="page-content-wrapper">
+  <div class="page-content">
+    <div class="container-fluid">
+      <div class="row main"> 
+        <!--Cursos dashboard-->
+        <session class="col-sm-9 col-md-12 col-lg-12 main"> 
+        {if !empty($sucesso)}
+            <div class="alert alert-success"> 
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+              <strong>Sucesso!</strong> {$sucesso}
+            </div>
+        {/if}    
+        {if !empty($fracasso)}
+          <div class="alert alert-danger"> 
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+            <strong>Operação mal sucedida!</strong> {$fracasso} Por favor tente novamente.
+          </div>
+        {/if}    
+          <h1 class="page-header">Dashboard</h1>
+          {if $admin}<a class="btn btn-success" href="?ctrl=dashboardCurso&ac=cadastrar">Novo curso</a>{/if}
+          <div class="row "> 
+           {if empty($cursos)}
+           	<hr>
+            <br>
+            <h4 class="text-center">Você não possui nenhum curso</h4>
+           {else}
+            {foreach $cursos as $curso}
+                <!--Curso-->
+                 <article class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="row"> 
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                      <br>
+                      <img class="img-responsive" src="controller/temp/{$curso[0]['numero']}.jpg" width="250" height="250" alt="{$curso[0]['nome']}">
+                    </div>
+                    
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                      <h3><strong>{$curso[0]['nome']}</strong></h3>
+					  {if !$admin}
+                      <span class="text-nowrap"><strong>Concluído: {$curso[0]['desempenho']|string_format:"%.2f"*100}%</strong></span><br>
+                      {/if}
+                      <p class="text-justify">{$curso[0]['descricao_curta']}<br></p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right">
+                     {if $admin}
+                       <a href="?ctrl=dashboardCurso&ac=recuperar&curso={$curso[0]['numero']}" class="btn btn-primary">Editar curso</a> 
+                       <a href="?ctrl=curso&ac=recuperarCurso&curso={$curso[0]['numero']}" class="btn btn-info">Ver curso</a> 
+                     {else}
+                     <a href="?ctrl=classroom&ac=pagina&curso={$curso[0]['numero']}&pagina=Pagina%20Inicial" class="btn btn-primary">Ver curso</a> 
+                     {/if}
+                      <button class="btn btn-default" data-toggle="popover{$curso[0]['numero']}" data-placement="top" data-trigger="focus" data-container="body" type="button" data-html="true"><i class="fa fa-cogs"></i></button> 
+                      <!--Popover-->
+                      <div id="popover-content{$curso[0]['numero']}" class="hide" > 
+                      {if $admin}
+                        <a href="?ctrl=dashboardModulo&ac=modulos&curso={$curso[0]['numero']}" class="btn btn-primary center-block">Módulos</a><br>
+                        <a href="?ctrl=dashboardPagina&ac=paginas&curso={$curso[0]['numero']}" class="btn btn-primary center-block">Páginas</a><br>
+                        <a href="?ctrl=dashboardCurso&ac=excluir&curso={$curso[0]['numero']}" class="btn btn-danger center-block">Remover curso</a>
+                      {else}
+                          <a href="?ctrl=licao&ac=progresso&curso={$curso[0]['numero']}" class="btn btn-primary center-block">Consultar progresso</a><br>
+                          <a href="?ctrl=curso&ac=cancelar&curso={$curso[0]['numero']}" class="btn btn-danger center-block">Cancelar inscrição</a>
+                      {/if}
+                      
+                    </div>
+                    <!--Popover--> 
+                    </div>
+                  </div>
+                  <!--row--> 
+                </article>
+                <br>
+                <!--Curso--> 
+              {/foreach}
+            {/if}
+          </div>
+        </session>
+        <!--Cursos dashboard--> 
+      </div>
+    </div>
+  </div>
+</div>
+<!--Conteúdo-->
+<hr>
+{include file="footer.html"} 
+<!--Opções do curso--> 
+<script>
+	{foreach $cursos as $curso}
+	  $("[data-toggle=popover{$curso[0]['numero']}]").popover({
+	  html: true, 
+	  content: function() {
+			return $("#popover-content{$curso[0]['numero']}").html();
+		  }
+	  });
+	  $(document).ready(function(){
+		  $("[data-toggle=popover{$curso[0]['numero']}").popover();
+	  });
+	{/foreach}
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+ {include file="header.html"} 
+  <div class="container-fluid">
+      <div class="row main">
+       <!--Cursos dashboard-->
+       <session class="col-sm-9 col-md-12 col-lg-12 main">
+          <!--Formulario de edição de perfil-->
+          <article class="col-sm-12  col-md-12  col-lg-12 ">
+              <form class="form-horizontal" method="POST" action="?ctrl=usuario&ac=perfil" autocomplete="off" enctype="multipart/form-data">
+                <fieldset class="col-sm-8  col-md-8  col-lg-8 pull-left">
+                  <legend>Editar perfil</legend>
+                  <!--Foto do perfil-->
+                  <fieldset class="row form-group">
+                    <label class="col-md-2 control-label" for="Foto">Foto</label>
+                    <img class="col-md-2 img-circle" src="{if !empty($perfil[0]['foto'])} controller/temp/{$perfil[0]['email']}.jpg {/if}"   width="20"/>
+                    <div class="col-md-8">
+                      <input id="Foto" name="foto" class="input-file" type="file">
+                    </div>
+                  </fieldset>
+                  <!--Foto do perfil-->
+                  <fieldset class="row form-group">
+                    <label class="col-md-2 control-label pull-left" for="Nome">Nome</label>  
+                    <div class="col-md-10">
+                    <input id="Nome" name="nome" type="text" placeholder="Nome completo" class="form-control input-md" required="" {if !empty($perfil[0]['nome'])} value={$perfil[0]['nome']} {/if}>
+                    </div>
+                  </fieldset>
+                  <fieldset class="row form-group">
+                    <label class="col-md-2 control-label" for="senha">Senha</label>
+                    <div class="col-md-10">
+                      <input id="senha" name="senha" type="password" placeholder="Senha" class="form-control input-md" required="" {if !empty($perfil[0]['senha'])} value={$perfil[0]['senha']} {/if}>
+                      
+                    </div>
+                  </fieldset>
+                  <fieldset class="row form-group">
+                    <label class="col-md-2 control-label" for="local">Local</label>  
+                    <div class="col-md-10">
+                    <input id="local" name="local" type="text" placeholder="Local" class="form-control input-md" 
+                    {if !empty($perfil[0]['local'])} value={$perfil[0]['local']} {/if}>
+                    </div>
+                  </fieldset>
+                  <fieldset class="row form-group">
+                    <label class="col-md-2 control-label" for="sexo">sexo</label>
+                    <div class="col-md-10">
+                      <div class="radio">
+                        <label for="sexo-0">
+                          <input type="radio" name="sexo" id="sexo-0" value="masculino" 
+                          {if !empty($perfil[0]['sexo'])} {if $perfil[0]['sexo']=='masculino'} checked {/if}{/if}>
+                          masculino
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label for="sexo-1">
+                          <input type="radio" name="sexo" id="sexo-1" value="feminino" {if !empty($perfil[0]['sexo'])} 
+                          {if $perfil[0]['sexo']=='feminino'} checked {/if}{/if}>
+                          feminino
+                        </label>
+                        </div>
+                      <div class="radio">
+                        <label for="sexo-2">
+                          <input type="radio" name="sexo" id="sexo-2" value="outro" {if !empty($perfil[0]['sexo'])} 
+                          {if $perfil[0]['sexo']=='outro'} checked {/if}{/if}>
+                          outro
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="row form-group">
+                    <label class="col-md-2 control-label text-center" for="sobre">Quem sou eu</label>
+                    <div class="col-md-10">                     
+                      <textarea class="form-control" id="sobre" rows="10" name="sobre" style="resize:none;">{if !empty($perfil[0]['sobre'])}{$perfil[0]['sobre']}{else}Sobre você{/if}</textarea>
+                    </div>
+                  </fieldset>
+                  <fieldset class="row form-group">
+                      <div class="col-md-12">  
+                          <button type="input" class="btn btn-primary center-block" name="Atualizar">Atualizar</button>
+                      <div/>  
+                  </fieldset>
+                </fieldset>
+              </form>
+          </article>
+          <!--Formulario de edição de perfil-->
+       </session>
+       <!--Cursos dashboard-->
+      </div>
+  </div>
+  <hr>
+ {include file="footer.html"} 
+<!--Opções do curso-->
+<script>
+	$("[data-toggle=popover]").popover({
+    html: true, 
+	content: function() {
+          return $('#popover-content').html();
+        }
+	});
+	$(document).ready(function(){
+		$('[data-toggle="popover"]').popover();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+@charset "utf-8";
+/*BARRA LATERAL DIREITA*/
+.affix-top,.affix{
+ position: static;
+}
+#sidebar{
+	margin-top:20px;
+}
+#sidebar a{
+	color:#fff;
+	margin:0px;
+}
+#sidebar a:hover{
+	color:#000;
+}
+
+
+
+
+/*Configuração para fixar a sidebar*/
+@media (min-width: 979px) {
+  #sidebar.affix-top {
+    position: static;
+  	margin-top:30px;
+  	width:228px;
+  }
+  #sidebar.affix {
+    position: fixed;
+    top:60px;
+    width:228px;
+  }
+}
+
+/*PAINEL*/
+#painel{
+  margin-top:30px;
+  top:60px;
+}
+
+/*Correção do texto*/
+@media (max-width: 476PX) { 
+	p {
+		margin-left:8px;
+		margin-right:8px;
+		} 
+	h2,h3 {
+		margin-left:8px;
+		margin-right:8px;
+		font-size:18px;
+	} 
+	
+	h1{
+		margin-left:8px;
+		margin-right:8px;
+		font-size:30px;
+	}
+	
+}
+

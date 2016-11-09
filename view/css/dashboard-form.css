@@ -1,0 +1,9 @@
+@charset "utf-8";
+/*FORMULARIO DO CURSO*/
+.form-control {
+	width:120px;
+}
+.popover {
+	max-width:400px;
+}
+

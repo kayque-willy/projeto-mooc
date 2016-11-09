@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+  {include file="header.html"} 
+  <!--Conteúdo-->
+  <div id="page-content-wrapper">
+      <div class="page-content">
+          <div class="container-fluid">
+              <div class="row main">
+               <!--Paginas dashboard-->
+               <session class="col-sm-9 col-md-12 col-lg-12 main">
+                  <h1 class="page-header">Conteúdo da lição {$nome_licao}</h1>
+                   <form id="pagina" role="form" method="POST" action="" autocomplete="off">
+                    <!--Nome-->
+                    <fieldset class="row form-group">
+                      <label class="col-md-2 control-label pull-left" for="Nome" >Título</label>
+                      <div class="col-md-10">
+                        <input type="text" name="conteudo" class="form-control input-md" placeholder="Titulo" {if !empty($conteudo)} value="{$conteudo}" {/if} required>
+                      </div>
+                    </fieldset>
+                    <!--Tipo-->
+                    <fieldset class="row form-group">
+                      <label class="col-md-2 control-label pull-left" for="Nome">Tipo de conteúdo</label>
+                      <div class="col-md-10">
+                        <select  id="titulo" name="tipo" type="text" placeholder="Título da pagina" class="form-control input-md" required>
+                          <option {if !empty($tipo)} {if $tipo=='video'} selected {/if} {/if}>video</option>
+                          <option {if !empty($tipo)} {if $tipo=='pdf'} selected {/if} {/if}>pdf</option>
+                          <option {if !empty($tipo)} {if $tipo=='audio'} selected {/if} {/if}>audio</option>
+                          <option {if !empty($tipo)} {if $tipo=='imagem'} selected {/if} {/if}>imagem</option>
+                          <option {if !empty($tipo)} {if $tipo=='slide'} selected {/if} {/if}>slide</option>
+                          <option {if !empty($tipo)} {if $tipo=='jogo'} selected {/if} {/if}>jogo</option>
+                          <option {if !empty($tipo)} {if $tipo=='quiz'} selected {/if} {/if}>quiz</option>
+                          <option {if !empty($tipo)} {if $tipo=='faq'} selected {/if} {/if}>faq</option>
+                        </select>
+                      </div>
+                    </fieldset>
+                    <!--Nome-->
+                    {if !empty($pagina_rec)}
+                      	{foreach $pagina_rec as $conteudo}
+                            {if $conteudo['tipo']=='sessao'}
+                            <fieldset id="field{$conteudo['field']}" class="row form-group">
+                                <label class="col-md-2 control-label pull-left" for="Nome">Sessão</label>
+                                <div class="col-md-10">
+                                <input name="titulo_sessao[]" type="text" placeholder="Título da sessão" class="form-control input-md" value="{$conteudo['indice']}"><br>   
+                                <textarea name="conteudo_sessao[]" class="form-control" rows="13" placeholder="Conteúdo da sessão" style="resize:none;">{$conteudo['conteudo']}</textarea>
+                                <input type="hidden" name="ordem[]" value="sessao">
+                                <button id="remove|{$conteudo['field']}" class="btn btn-danger remove-me">Remover</button>                           		</div>
+                            </fieldset>
+                            {elseif $conteudo['tipo']=='link'}
+                            <fieldset id="field{$conteudo['field']}" class="row form-group">
+                              <label class="col-md-2 control-label pull-left" for="Nome">Link</label>
+                              <div class="col-md-10">
+                              <textarea name="link[]" class="form-control" rows="13" placeholder="iframe" style="resize:none;">{$conteudo['link']}</textarea>
+                              <input type="hidden" name="ordem[]" value="link">
+                              <button id="remove|{$conteudo['field']}" class="btn btn-danger remove-me">Remover</button>
+                              </div>
+                            </fieldset>
+                            {/if}
+                        {/foreach}
+                       	<input type="hidden" name="pagina" value="{$pagina}"/>
+                      {/if}
+                    
+                    <!--Sessão-->
+                    <input  id="field" type="hidden"/>
+                    <!--Sessão-->
+                    <!--Enviar-->  
+                    <ul class="list-inline pull-right">
+                      <li>
+                          <button id="b1" class="btn btn-info add-area" type="button">Adicionar texto</button>
+                      </li>
+                      <li>
+                          <button id="b2" class="btn btn-info add-campo" type="button">Adicionar link</button>
+                      </li>
+                      <li>
+                        <button type="button" class="btn btn-primary" onClick="window.location.replace('?ctrl=dashboardLicao&ac=conteudo&modulo={$modulo}&licao={$nome_licao}&curso={$numero_curso}');">Cancelar</button>
+                      </li>
+                      <li>
+                        <button type="submit" class="btn btn-primary btn-success">Salvar</button>
+                      </li>
+                    </ul>
+                    <!--Enviar-->  
+                  </form>	
+               </session>
+               <!--Paginas dashboard-->
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--Conteúdo-->
+  <hr>
+  {include file="footer.html"} 
+<!--Campos múltiplos-->
+<script type="text/javascript">
+$(document).ready(function(){
+    var next = {if !empty($cont)} {$cont} {else} 0 {/if};
+    $(".add-area").click(function(e){
+        e.preventDefault();
+        var addto = "#field";
+        next = next + 1;
+        var newIn = '<fieldset id="field' + next + '"class="row form-group">'+
+		'<label class="col-md-2 control-label pull-left" for="Nome">Sessão</label>'+
+		'<div class="col-md-10">'+
+		'<input name="titulo_sessao[]" type="text" placeholder="Título da sessão" class="form-control input-md" required=""><br>'+		   
+		'<textarea name="conteudo_sessao[]" class="form-control" rows="13" placeholder="Conteúdo da sessão" style="resize:none;"></textarea>'+
+		'<input type="hidden" name="ordem[]" value="sessao">'+
+		'<button id="remove|' + next + '" class="btn btn-danger remove-me">Remover</button></div>' +
+		'</fieldset>';
+		var newInput = $(newIn);
+        $(addto).before(newInput);
+        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+        $("#count").val(next);  
+		
+		$('.remove-me').click(function(e){
+			e.preventDefault();
+			var myString = this.id;
+			var fieldNum = myString.split('|');
+			var fieldID = "#field" + fieldNum[1];
+			$(fieldID).remove();
+			$(this).remove();	
+			if(fieldNum==next) next=0;
+		});
+    });
+	
+	$(".add-campo").click(function(e){
+        e.preventDefault();
+        var addto = "#field";
+        next = next + 1;
+		 var newIn = '<fieldset id="field' + next + '"class="row form-group">'+
+		'<label class="col-md-2 control-label pull-left" for="Nome">Link</label>'+
+		'<div class="col-md-10">'+
+		'<textarea name="link[]" class="form-control" rows="13" placeholder="iframe" style="resize:none;"></textarea>'+
+		'<input type="hidden" name="ordem[]" value="link">'+
+		'<button id="remove|' + next + '" class="btn btn-danger remove-me">Remover</button></div>' +
+		'</fieldset>';
+		
+		var newInput = $(newIn);
+        $(addto).before(newInput);
+        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+        $("#count").val(next);  
+		
+		$('.remove-me').click(function(e){
+			e.preventDefault();
+			var myString = this.id;
+			var fieldNum = myString.split('|');
+			var fieldID = "#field" + fieldNum[1];
+			$(fieldID).remove();
+			$(this).remove();	
+			if(fieldNum==next) next=0;
+		});
+    });
+	
+	$('.remove-me').click(function(e){
+			e.preventDefault();
+			var myString = this.id;
+			var fieldNum = myString.split('|');
+			var fieldID = "#field" + fieldNum[1];
+			$(fieldID).remove();
+			$(this).remove();	
+			if(fieldNum==next) next=0;
+		});
+});
+</script>
+<!--Campos múltiplos-->
+</body>
+</html>

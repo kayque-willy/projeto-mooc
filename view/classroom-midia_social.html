@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!--Titulo e descrição-->
+  <title>Projeto MOOC</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="Projeto MOOC - TFG Kayque"/>
+  <!--Configurações do bootstrap-->  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="view/css/bootstrap/bootstrap.min.css"/>
+  <!--Folhas de estilo-->
+  <link rel="stylesheet" href="view/css/cabecalho-rodape.css"/>
+  <link rel="stylesheet" href="view/css/dashboard.css"/>
+  <link rel="stylesheet" href="view/css/multimidia.css"/>
+  <link rel="stylesheet" href="view/css/classroom-midia-social.css"/>
+  <!--Icones-->
+  <link rel="stylesheet" href="view/fonts/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+  <!--Plugin facebook-->
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.7";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+  <!--Plugin twitter-->
+  <script>
+   !function(d,s,id){
+	   var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){
+	   js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+   </script>      
+    {include file="header.html"} 
+    <!--Conteúdo-->
+    <div id="page-content-wrapper">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row main">
+                  <section class="col-lg-12 col-md-12">
+                    <h1 class="text-center">Classroom - {$nome_curso[0]['nome']}</h1>
+                    <hr>
+                    <!--Painél-->
+                    <div class="panel panel-default">
+                      <!--Menu do curso-->
+                      <nav class="navbar navbar-default">
+                        <div class="container"> 
+                        <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myDefaultNavbar1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+                        </div>
+                        <div class="collapse navbar-collapse" id="myDefaultNavbar1">
+                          <ul class="nav navbar-nav navbar-header">
+                            {foreach $paginas as $pagina}
+                            	<li {if $nome_pagina==$pagina['titulo']} class="active" {/if}><a href="?ctrl=classroom&ac=pagina&curso={$numero_curso}&pagina={$pagina['titulo']}">{$pagina['titulo']}</a></li>
+                            {/foreach}
+                            <li {if $nome_pagina=="Discussao"} class="active" {/if}><a href="?ctrl=classroom&ac=discussao&curso={$numero_curso}">Discussão</a></li>
+                            <li  {if $nome_pagina=="Material Adicional"} class="active" {/if}><a href="?ctrl=classroom&ac=material&curso={$numero_curso}">Material adicional</a></li>
+                            <li  {if $nome_pagina=="Wiki"} class="active" {/if}><a href="?ctrl=classroom&ac=wiki&curso={$numero_curso}">Wiki</a></li>
+                            <li  {if $nome_pagina=="Midia Social"} class="active" {/if}><a href="?ctrl=classroom&ac=midiaSocial&curso={$numero_curso}">Mídia social</a></li>
+                            <li  {if $nome_pagina=="Licao"} class="active" {/if}><a href="?ctrl=licao&ac=licao&curso={$numero_curso}">Lição</a></li>
+                            {if !empty($sessao['usuario']) and $sessao['tipo_usuario']=='aluno'}
+                            <li  {if $nome_pagina=="Progresso"} class="active" {/if}><a href="?ctrl=licao&ac=progresso&curso={$numero_curso}">Progresso</a></li>
+                            {/if}
+                          </ul> 
+                        </div>
+                       </div>
+                      </nav>
+                      <!--Menu do curso--> 
+                      <!--Conteúdo-->
+                      <section class="panel-body text-justify">
+                           <!--Cabeçalho-->
+                           <div class="row">
+                             <h2 class="col-md-10 text-center">Midias sociais referentes ao curso</h2>
+                           	 <div class="col-md-2">
+                                 {if !empty($sessao) and (($sessao['tipo_usuario']=="tutor") or ($sessao['tipo_usuario']=="admin"))}
+                                <button  data-toggle="modal" data-target="#editarArtigo" data-id="0" class="open-editar btn btn-primary btn-sm">midia 1</button>
+                                <button  data-toggle="modal" data-target="#editarArtigo" data-id="1" class="open-editar btn btn-primary btn-sm">midia 2</button>
+                                {/if}
+                           	  </div>
+                           </div>
+                           <!--Cabeçalho-->
+                           <hr>
+                           <div class="row">
+                             <!--Midia-->
+                             <div class="col-md-7 col-xs-12 item">
+                               {if !empty($midia)}
+                                 {if !empty($midia[0])}
+                                      <div id="post0" data-id='{$midia[0]["link"]}'>{$midia[0]['link']}</div>
+                                 {else}
+                                   {if !empty($sessao) and (($sessao['tipo_usuario']=="tutor") or ($sessao['tipo_usuario']=="admin"))}
+                                       <button  data-toggle="modal" data-target="#novoArtigo" class="btn btn-md btn-success center-block open-novo" >Adicionar mídia</button>
+                                    {/if}
+                                 {/if}
+                               {else}
+                               	{if !empty($sessao) and (($sessao['tipo_usuario']=="tutor") or ($sessao['tipo_usuario']=="admin"))}
+                                       <button  data-toggle="modal" data-target="#novoArtigo" class="btn btn-md btn-success center-block open-novo" >Adicionar mídia</button>
+                                 {/if}
+                               {/if}
+                             </div>
+                             <!--Midia-->
+                             <!--Midia-->
+                             <div class="col-md-5  col-xs-12 item">
+                            {if !empty($midia)}
+                               {if !empty($midia[1])}
+                                   <div id="post1" data-id='{$midia[1]["link"]}'>{$midia[1]['link']}</div>
+                               {else}
+                                     {if !empty($sessao) and (($sessao['tipo_usuario']=="tutor") or ($sessao['tipo_usuario']=="admin"))}
+                                     <button  data-toggle="modal" data-target="#novoArtigo" class="btn btn-md btn-success center-block open-novo" >Adicionar mídia</button>
+                                     {/if}
+                               {/if}
+                             {else}
+                                     {if !empty($sessao) and (($sessao['tipo_usuario']=="tutor") or ($sessao['tipo_usuario']=="admin"))}
+                                     <button  data-toggle="modal" data-target="#novoArtigo" class="btn btn-md btn-success center-block open-novo" >Adicionar mídia</button>
+                                     {/if}
+                             {/if}
+                             </div>
+                             <!--Midi-->
+                           </div> 
+                      </section>
+                      <!--Conteúdo-->
+                    </div>
+                    <!--Painél-->
+                  </section>
+                </div><!--row main-->
+            </div><!--container-fluid-->
+        </div><!--page-content-->
+    </div><!--page-content-wrapper-->
+    <!--Conteúdo-->
+    <hr>
+    <!--Modal novo artigo-->
+    <div class="modal fade" id="novoArtigo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+        <h3 class="modal-title">Adicionar midia social</h3>
+      </div>
+      <div class="modal-body">
+         <form  method="POST" action="?ctrl=classroom&ac=novaMidia&curso={$numero_curso}" class="tab-content" autocomplete="off">
+          <input type="hidden" name="numero_curso" class="rating" value="{$numero_curso}">
+          <input type="hidden" name="email_aluno" class="rating" value="{$sessao['usuario']}">
+          <!--Comentario-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="comentario">Iframe da midia social</label>
+            <div class="col-md-10">
+              <textarea class="form-control" id="midia" rows="13" name="midia" placeholder="Insira o iframe da pagina aqui" style="resize:none;" maxlength="400"></textarea>
+            </div>
+          </fieldset>
+          <!--Comentario-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="submit" class="btn btn-primary pull-left">Enviar</button>
+            </li>
+          </ul>
+        </form>
+        <br>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--Modal novo artigo-->
+    <!--Modal editar artigo-->
+    <div class="modal fade" id="editarArtigo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+        <h3 class="modal-title">Editar midia social</h3>
+      </div>
+      <div class="modal-body">
+         <form  method="POST" action="?ctrl=classroom&ac=editarMidia&curso={$numero_curso}" class="tab-content" autocomplete="off">
+          <input type="hidden" name="midia_antiga" id="midia_antiga" class="rating" value="">
+          <input type="hidden" name="numero_curso" class="rating" value="{$numero_curso}">
+          <input type="hidden" name="email_aluno" class="rating" value="{$sessao['usuario']}">
+          <!--Comentario-->
+          <fieldset class="row form-group">
+            <label class="col-md-2 control-label pull-left" for="comentario">Artigo</label>
+            <div class="col-md-10">
+               <textarea class="form-control" id="midia" rows="13" name="midia" placeholder="Insira o iframe da pagina aqui" style="resize:none;" maxlength="400"></textarea>
+            </div>
+          </fieldset>
+          <!--Comentario-->
+          <ul class="list-inline pull-right">
+            <li>
+              <button type="submit" class="btn btn-primary pull-left">Enviar</button>
+            </li>
+          </ul>
+        </form>
+        <br>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--Modal editar artigo-->
+    {include file="footer.html"} 
+    <script>
+    $(document).on("click", ".open-novo", function () {
+     	var numero = $(this).data('id');
+     	var texto = $("#post"+numero).data('id');
+		$(".modal-body #midia").val("");
+	});
+
+	$(document).on("click", ".open-editar", function () {
+     	var numero = $(this).data('id');
+     	var texto = $("#post"+numero).data('id');
+		$(".modal-body #midia").val(texto);
+		$(".modal-body #midia_antiga").val(texto);
+	});
+	</script>
+</body>
+</html>

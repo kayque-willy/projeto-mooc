@@ -1,0 +1,140 @@
+@charset "utf-8";
+/*CONTEÚDO*/
+.main{
+	margin-left:10px;
+	margin-right:0px;
+	padding:0px;
+	border:0px;
+}
+.page-header{
+	margin-top:10px;
+}
+article{
+	margin-top:15px;
+	margin-left:0px;
+	margin-right:0px;
+	padding:0px
+}  
+.fa active{
+	color:white;
+	padding-top:10px;
+}  
+.text-nowrap{
+	font-size:18px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+h2{
+	margin-top:10px;
+	margin-bottom:0px;
+}
+
+h4{
+	margin-top:0px;
+	margin-bottom:10px;
+}
+
+/*SIDEBAR*/
+#wrapper {
+  padding-left: 250px;
+  transition: all 0.4s ease 0s;
+}
+#sidebar-wrapper {
+  margin-left: -250px;
+  top: 51px;
+  left: 250px;
+  width: 250px;
+  background: #000;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+}
+#wrapper.active {
+  padding-left: 0;
+}
+#wrapper.active #sidebar-wrapper {
+  left: 0;
+}
+#page-content-wrapper {
+  width: 100%;
+  padding-top: 30px;
+  transition: all 0.4s ease 0s;
+}
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-nav li {
+  line-height: 40px;
+  text-indent: 20px;
+}
+.sidebar-nav li a {
+  color: #999999;
+  display: block;
+  text-decoration: none;
+  padding-left: 60px;
+}
+.sidebar-nav li a span:before {
+  position: absolute;
+  left: 0;
+  color: #41484c;
+  text-align: center;
+  width: 20px;
+  line-height: 18px;
+}
+.sidebar-nav li a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  text-decoration: none;
+}
+.sidebar-nav .active {
+  text-decoration: none;
+  color: #fff;
+}
+
+/*Brand da sidebar*/
+.sidebar-nav > .sidebar-brand {
+  height: 55px;
+  line-height: 60px;
+  font-size: 20px;
+}
+.sidebar-nav > .sidebar-brand a {
+  padding-top:20px;
+  color: #999999;
+}
+.sidebar-nav > .sidebar-brand a:hover {
+  color: #fff;
+  background: none;
+}
+#menu-toggle {
+    text-decoration: none;
+    float: left;
+    color: #fff;
+    padding-right: 15px;
+}
+@media (max-width:767px) {
+	#wrapper {
+	  padding-left: 0;
+	}
+	#sidebar-wrapper {
+	  left: 0;
+	}
+	#wrapper.active {
+	  position: relative;
+	  left: 250px;
+	}
+	#wrapper.active #sidebar-wrapper {
+	  left: 250px;
+	  width: 250px;
+	  transition: all 0.4s ease 0s;
+	}
+	#menu-toggle {
+	  display: inline-block;
+	}
+}

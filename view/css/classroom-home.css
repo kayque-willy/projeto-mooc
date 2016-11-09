@@ -1,0 +1,26 @@
+@charset "utf-8";
+/*CABEÇALHO DA PAGINA INICIAL*/
+.panel-body header a {
+	margin-top:25px;
+	margin-bottom:25px;
+}
+
+/*Correção do texto*/
+@media (max-width: 476PX) { 
+	p {
+		font-size:12px;
+		margin-left:10px;
+		margin-right:10px;
+	} 
+	h2,h3,h4 {
+		font-size:18px;
+		margin-left:8px;
+		margin-right:8px;
+	} 
+	h1{
+		margin-left:8px;
+		margin-right:8px;
+		font-size:30px;
+	}
+}
+
